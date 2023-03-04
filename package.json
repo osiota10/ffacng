@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "html-react-parser": "^3.0.9",
+    "react-countup": "^6.4.1"
+  }
+}
