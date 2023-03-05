@@ -103,6 +103,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGIN_REGEXES = env.list('CORS_ALLOWED_ORIGIN_REGEXES')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://ffacng.up.railway.app",
 ]
 
 MIDDLEWARE = [
@@ -121,7 +122,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/build'), ],
+        'DIRS': [os.path.join(BASE_DIR, 'build'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
