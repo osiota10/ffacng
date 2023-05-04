@@ -131,11 +131,11 @@ class Payment(models.Model):
         super().save(*args, **kwargs)
 
 
-class PaymentProof(models.Model):
-    payment = models.OneToOneField(
-        Payment, on_delete=models.CASCADE, related_name='proof')
-    date = models.DateField(auto_now_add=True)
-    proof = CloudinaryField('image')
+# class PaymentProof(models.Model):
+#     payment = models.OneToOneField(
+#         Payment, on_delete=models.CASCADE, related_name='proof')
+#     date = models.DateField(auto_now_add=True)
+#     proof = CloudinaryField('image')
 
-    def get_image_url(self):
-        return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.proof}")
+#     def get_image_url(self):
+#         return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.proof}")

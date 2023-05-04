@@ -38,4 +38,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(UserAccount, CustomUserAdmin)
 admin.site.register(Payment)
-admin.site.register(PaymentProof)
+# admin.site.register(PaymentProof)

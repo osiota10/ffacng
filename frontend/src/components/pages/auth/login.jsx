@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
 
 const pic = {
-    url: 'https://unsplash.com/photos/s48PfndSWdQ'
+    url: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
 }
 
 export const myStyle = {
