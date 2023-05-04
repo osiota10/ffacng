@@ -63,17 +63,17 @@ class RefCodeCheckView(generics.RetrieveAPIView):
 # print(mlm_system_test.find_depth('favour'))
 # print(mlm_system_test.get_downline_by_depth('Osiota'))
 
-users = UserAccount.objects.all().exclude(is_superuser=True)
+# users = UserAccount.objects.all().exclude(is_superuser=True)
 
-super_user = UserAccount.objects.all().filter(is_superuser=True).first
+# super_user = UserAccount.objects.all().filter(is_superuser=True).first
 
-users_dict = {user.email: user.recommended_by for user in users}
+# users_dict = {user.email: user.recommended_by for user in users}
 
-# print(super_user)
-print(users_dict.keys())
-print(users_dict.values())
-mlm_system_test = MLMSystem()
-# for key, value in users_dict.items():
-#     mlm_system_test.add_user(key, value)
+# # print(super_user)
+# print(users_dict.keys())
+# print(users_dict.values())
+# mlm_system_test = MLMSystem()
+# # for key, value in users_dict.items():
+# #     mlm_system_test.add_user(key, value)
 
-tree = mlm_system_test.print_binary_tree()
+# tree = mlm_system_test.print_binary_tree()
