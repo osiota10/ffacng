@@ -10,7 +10,7 @@ class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = user
         fields = ('id', 'first_name',
-                  'last_name', 'email', 'password')
+                  'last_name', 'email', 'refferer_code_used', 'password')
 
 
 class UserInfoSerializer(UserSerializer):
@@ -22,28 +22,14 @@ class UserInfoSerializer(UserSerializer):
                   'local_govt', 'state_of_origin', 'recommended_by')
 
 
-# class PaymentProofSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = PaymentProof
-#         fields = ('id', 'date', 'get_image_url')
-
-
 class PaymentSerializer(serializers.ModelSerializer):
-    # payment_proof = serializers.FileField()
-
     class Meta:
         model = Payment
-        fields = ('id', 'date', 'amount', 'pin', 'status', 'payment_proof')
+        fields = ('id', 'date', 'amount', 'pin', 'status',
+                  'payment_proof', 'get_image_url')
 
-    # def create(self, validated_data):
-    #     # Extract the nested proof data from the validated data
-    #     proof_data = validated_data.pop('proof')
 
-    # # Create the Payment object with the remaining validated data
-    #     payment = Payment.objects.create(**validated_data)
-
-    # # Create the associated Proof object
-    #     PaymentProof.objects.create(payment=payment, **proof_data)
-
-    # # Return the Payment object
-    #     return payment
+class RefCodeCheckSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user
+        fields = ('first_name', 'last_name', 'code')

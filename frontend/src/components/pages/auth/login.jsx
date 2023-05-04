@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
 
 const pic = {
-    url: 'http://www.highreshdwallpapers.com/wp-content/uploads/2014/01/Athletic-Running-HD-Image.jpg'
+    url: 'https://unsplash.com/photos/s48PfndSWdQ'
 }
 
 export const myStyle = {
@@ -24,6 +24,8 @@ export const myStyle = {
 function Login({ login, isAuthenticated, error }) {
     const companyInfo = useContext(CompanyInformationContext)
 
+    const [loading, setLoading] = useState(false);
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -36,15 +38,16 @@ function Login({ login, isAuthenticated, error }) {
 
     const onSubmit = e => {
         e.preventDefault();
-
+        setLoading(true)
         login(email, password);
+        setLoading(false)
     };
 
 
     if (isAuthenticated) {
         return <Navigate to='/dashboard' replace={true} />
     }
-    // console.log(error)
+
     return (
         <section style={myStyle}>
             <section class="container reg-forms min-vh-100">
@@ -92,7 +95,7 @@ function Login({ login, isAuthenticated, error }) {
                                 </div>
 
                                 <section className="d-grid">
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>Login</button>
                                 </section>
 
 

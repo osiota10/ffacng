@@ -76,12 +76,13 @@ class User:
         self.left_child = None
         self.right_child = None
         self.depth = 0
-        if parent:
-            self.depth = parent.depth + 1
-            if not parent.left_child:
-                parent.left_child = self
-            else:
-                parent.right_child = self
+
+        # if parent:
+        #     self.depth = parent.depth + 1
+        #     if not parent.left_child:
+        #         parent.left_child = self
+        # else:
+        #     parent.right_child = self
 
     def __str__(self):
         return f"{self.name} (referral bonus: {self.referral_bonus}, match bonus: {self.match_bonus})"
@@ -92,67 +93,137 @@ class User:
     def add_match_bonus(self, amount):
         self.match_bonus += amount
 
-    def get_downlines(self):
-        downlines = []
-        if self.left_child:
-            downlines.append(self.left_child)
-            downlines += self.left_child.get_downlines()
-        if self.right_child:
-            downlines.append(self.right_child)
-            downlines += self.right_child.get_downlines()
-        return downlines
-
 
 class MLMSystem:
+    # def __init__(self):
+    #     self.root = User("root")
+
+    # def add_user(self, name, parent_name):
+    #     parent = self.find_user(parent_name, self.root)
+    #     user = User(name, parent)
+    #     self.update_match_bonus(user)
+
     def __init__(self):
-        self.root = User("root")
+        self.root = User('foodforall@gmail.com', parent=None)
+        self.users = {'foodforall@gmail.com': self.root}
 
     def add_user(self, name, parent_name):
-        parent = self.find_user(parent_name, self.root)
-        user = User(name, parent)
-        self.update_match_bonus(user)
+        if name in self.users:
+            raise ValueError(f"User '{name}' already exists")
 
-    def find_user(self, name, current_user):
-        if current_user.name == name:
-            return current_user
-        if current_user.left_child:
-            found_user = self.find_user(name, current_user.left_child)
-            if found_user:
-                return found_user
-        if current_user.right_child:
-            found_user = self.find_user(name, current_user.right_child)
-            if found_user:
-                return found_user
+        parent = self.users.get(parent_name)
+        if not parent:
+            raise ValueError(f"Parent user '{parent_name}' not found")
+
+        new_user = User(name, parent=parent)
+
+        if not parent.left_child:
+            parent.left_child = new_user
+        elif not parent.right_child:
+            parent.right_child = new_user
+        else:
+            # find the leftmost available position in the bottom row
+            queue = [parent.left_child, parent.right_child]
+            while queue:
+                node = queue.pop(0)
+                if not node.left_child:
+                    node.left_child = new_user
+                    break
+                elif not node.right_child:
+                    node.right_child = new_user
+                    break
+                queue.append(node.left_child)
+                queue.append(node.right_child)
+
+        new_user.depth = parent.depth + 1
+        self.users[name] = new_user
+
+        # update match bonus for the new user and its parents
+        # self.update_match_bonus(new_user)
+
+    # def update_match_bonus(self, user):
+    #     if user.depth > 9:
+    #         return
+    #     downlines = user.get_downlines()
+    #     total_referral_bonus = sum(
+    #         downline.referral_bonus for downline in downlines)
+    #     user.add_match_bonus(total_referral_bonus)
+    #     if user.parent:
+    #         self.update_match_bonus(user.parent)
+
+    # def add_referral_bonus(self, name, amount):
+    #     user = self.find_user(name, self.root)
+    #     user.add_referral_bonus(amount)
+    #     self.update_match_bonus(user)
+
+    def find_user(self, name, node=None):
+        if not node:
+            node = self.root
+
+        if node.name == name:
+            return node
+
+        if node.left_child:
+            result = self.find_user(name, node.left_child)
+            if result:
+                return result
+
+        if node.right_child:
+            result = self.find_user(name, node.right_child)
+            if result:
+                return result
         return None
 
-    def update_match_bonus(self, user):
-        if user.depth > 9:
-            return
-        downlines = user.get_downlines()
-        total_referral_bonus = sum(
-            downline.referral_bonus for downline in downlines)
-        user.add_match_bonus(total_referral_bonus)
-        if user.parent:
-            self.update_match_bonus(user.parent)
+    def find_depth(self, name, node=None, depth=0):
+        # user = self.find_user(name)
+        if not node:
+            node = self.root
 
-    def add_referral_bonus(self, name, amount):
-        user = self.find_user(name, self.root)
-        user.add_referral_bonus(amount)
-        self.update_match_bonus(user)
+        if node.name == name:
+            return depth
+
+        if node.left_child:
+            result = self.find_depth(name, node.left_child, depth + 1)
+            if result is not None:
+                return result
+
+        if node.right_child:
+            result = self.find_depth(name, node.right_child, depth + 1)
+            if result is not None:
+                return result
+
+        return None
 
     def print_binary_tree(self):
         self._print_binary_tree(self.root)
 
+    def print_individual_binary_tree(self, name):
+        user = self.find_user(name)
+        self._print_binary_tree(user)
+
     def _print_binary_tree(self, user, level=0):
         if user:
-            self._print_binary_tree(user.right_child, level + 1)
+            if user.right_child:
+                self._print_binary_tree(user.right_child, level + 1)
             print("    " * level, user)
-            self._print_binary_tree(user.left_child, level + 1)
+            if user.left_child:
+                self._print_binary_tree(user.left_child, level + 1)
 
+    def get_downline_by_depth(self, name):
+        user = self.users.get(name)
+        if not user:
+            return None
 
-mlm_system_test = MLMSystem()
-mlm_system_test.add_user('Osiota', 'ffcng')
-mlm_system_test.add_user('Terry', 'ffcng')
+        downline = []
+        level = [user]
+        while level:
+            next_level = []
+            for node in level:
+                downline.append(node.name)
+                if node.left_child:
+                    next_level.append(node.left_child)
+                if node.right_child:
+                    next_level.append(node.right_child)
+            level = next_level
 
-tree = mlm_system_test.print_binary_tree()
-print(tree)
+        return downline

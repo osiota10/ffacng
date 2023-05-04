@@ -32,6 +32,9 @@ const Downlines = () => {
 
             <h5 class="text-center mt-5">Your Downlines</h5>
 
+
+
+
             <section class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>

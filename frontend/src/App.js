@@ -11,7 +11,6 @@ import TermsAndConditions from './components/pages/termsAndConditions';
 import NoPage from './components/pages/noPage';
 import Layout from './components/pages/layout';
 import Login from './components/pages/auth/login';
-import SignUp from './components/pages/auth/signup';
 import ResetPassword from './components/pages/auth/resetPassword';
 import ResetPasswordConfirm from './components/pages/auth/passwordResetConfirm';
 import Activate from './components/pages/auth/activate';
@@ -29,6 +28,7 @@ import Downlines from './components/dashboard/downlines';
 import Payments from './components/dashboard/payments';
 import Referrals from './components/dashboard/referrals';
 import Support from './components/dashboard/support';
+import CreateAccount from './components/pages/auth/signup';
 
 
 export const ServiceContext = createContext(null)
@@ -84,7 +84,7 @@ function App() {
 
                   <Route>
                     <Route path='/login' element={<Login />} />
-                    <Route path='/signup' element={<SignUp />} />
+                    <Route path='/signup' element={<CreateAccount />} />
                     <Route path='/reset-password' element={<ResetPassword />} />
                     <Route path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm />} />
                     <Route path='/activate/:uid/:token' element={<Activate />} />

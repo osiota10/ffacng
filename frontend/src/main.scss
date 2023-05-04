@@ -298,6 +298,13 @@ $aspect-ratios: (
     border-bottom: 4px solid $primary;
 }
 
+.pagination{
+  .active{
+    color: $primary !important;
+    border-bottom: 0px;
+  }
+}
+
 a.nav-link.active{
     color: $primary !important;
     font-weight: $font-weight-bold;
@@ -441,6 +448,7 @@ li {
   left: 500px;
   z-index: 1030; 
 }
+
 
 
 @import '../node_modules/bootstrap/scss/_functions.scss';

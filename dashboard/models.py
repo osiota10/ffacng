@@ -65,11 +65,13 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     code = models.CharField(max_length=12, blank=True)
     recommended_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CharField, blank=True, null=True, related_name='ref_by')
+    refferer_code_used = models.CharField(max_length=12, blank=True)
 
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name',
+                       'phone_number', 'refferer_code_used']
     ordering = ('email',)
 
     def get_full_name(self):
@@ -92,6 +94,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         if self.code == "":
             code = generate_ref_code()
             self.code = code
+        if self.refferer_code_used:
+            current_reffer = UserAccount.objects.get(
+                code=self.refferer_code_used)
+            self.recommended_by = current_reffer
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -111,6 +117,9 @@ class Payment(models.Model):
     amount = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS, default='Pending')
     payment_proof = CloudinaryField('image', blank=True, null=True)
+
+    def get_image_url(self):
+        return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.payment_proof}")
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - N{self.amount} - {self.status}"

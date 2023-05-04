@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('image', 'password',)}),
         ('Personal info', {
-            'fields': ('first_name', 'last_name', 'email', 'gender', 'phone_number', 'date_of_birth', 'code', 'recommended_by',)}),
+            'fields': ('first_name', 'last_name', 'email', 'gender', 'phone_number', 'date_of_birth', 'code', 'recommended_by', 'refferer_code_used',)}),
         ('Bank Information', {
             'fields': ('bank_name', 'account_name', 'account_number',)}),
         ('Contact Address', {
