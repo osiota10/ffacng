@@ -94,10 +94,19 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         if self.code == "":
             code = generate_ref_code()
             self.code = code
+
+        # if self.refferer_code_used:
+        #     current_reffer = UserAccount.objects.get(
+        #         code=self.refferer_code_used)
+        #     self.recommended_by = current_reffer
+
         if self.refferer_code_used:
             current_reffer = UserAccount.objects.get(
                 code=self.refferer_code_used)
-            self.recommended_by = current_reffer
+            if self.pk is None and UserAccount.objects.filter(is_superuser=True).count() == 0:
+                self.recommended_by = ''
+            else:
+                self.recommended_by = current_reffer
         super().save(*args, **kwargs)
 
     def __str__(self):
