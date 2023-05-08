@@ -413,7 +413,13 @@ const Payments = () => {
 
             </section>
 
-            <PaginatedItems itemsPerPage={6} data={paymentData} />
+            {
+                Object.keys(paymentData).length === 0
+                    ?
+                    null
+                    :
+                    <PaginatedItems itemsPerPage={6} data={paymentData} />
+            }
 
             {/* Pin Generation Success Message */}
             <Modal

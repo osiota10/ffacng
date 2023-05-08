@@ -33,3 +33,23 @@ class RefCodeCheckSerializer(serializers.ModelSerializer):
     class Meta:
         model = user
         fields = ('first_name', 'last_name', 'code')
+
+
+class MlmSystemUserSerializer(serializers.ModelSerializer):
+    class Meta(UserSerializer.Meta):
+        models = user
+        fields = ('id', 'date_joined', 'first_name',
+                  'last_name', 'email', 'phone_number')
+
+
+class WithdrawalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Withdrawal
+        fields = ('id', 'user', 'amount', 'status', 'created_at',
+                  'updated_at', 'balance_before', 'balance_after')
+
+
+class UserAccountInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccountInfo
+        fields = ['balance']

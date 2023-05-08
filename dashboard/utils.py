@@ -1,6 +1,5 @@
 from django.conf import settings
 import uuid
-from .models import *
 
 # Generate Profile ID
 
@@ -65,7 +64,7 @@ def generate_payment_pin():
 # The add_member method adds a new member to the MLM system. It takes a name and a referrer_name as arguments. It finds the referrer member using the member_dict, and creates a new Member object with a level that is one more than the referrer's level. If the new member's level exceeds 9, it prints an error message.
 # The calculate_match_bonuses method calculates the match bonuses for all members in the MLM system. It starts with the root_member and recursively calculates the match bonuses of all members. It then prints the match bonuses for all members.
 
-
+# First Case
 # MLMSystem
 class User:
     def __init__(self, name, parent=None):
@@ -95,17 +94,12 @@ class User:
 
 
 class MLMSystem:
-    # def __init__(self):
-    #     self.root = User("root")
+    def __init__(self, users):
+        self.root = User(users[0])
+        self.users = {users[0]: self.root}
 
-    # def add_user(self, name, parent_name):
-    #     parent = self.find_user(parent_name, self.root)
-    #     user = User(name, parent)
-    #     self.update_match_bonus(user)
-
-    def __init__(self):
-        self.root = User('foodforall@gmail.com', parent=None)
-        self.users = {'foodforall@gmail.com': self.root}
+        for user in users[1:]:
+            self.add_user(user[0], user[1])
 
     def add_user(self, name, parent_name):
         if name in self.users:
@@ -225,5 +219,20 @@ class MLMSystem:
                 if node.right_child:
                     next_level.append(node.right_child)
             level = next_level
-
         return downline
+
+    def find_user_depth(self, name):
+        user = self.find_user(name)
+        if not user:
+            return None
+
+        levels = {}
+        self._calculate_levels(user, 0, levels)
+        return max(levels.values())
+
+    def _calculate_levels(self, node, level, levels):
+        levels[node.name] = level
+        if node.left_child:
+            self._calculate_levels(node.left_child, level + 1, levels)
+        if node.right_child:
+            self._calculate_levels(node.right_child, level + 1, levels)

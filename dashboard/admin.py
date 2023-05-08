@@ -38,4 +38,6 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(UserAccount, CustomUserAdmin)
 admin.site.register(Payment)
+admin.site.register(UserAccountInfo)
+admin.site.register(Withdrawal)
 # admin.site.register(PaymentProof)

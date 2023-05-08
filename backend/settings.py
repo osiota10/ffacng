@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'djoser',
     'ckeditor',
     'build',
+    'frontend',
 ]
 
 REST_FRAMEWORK = {
@@ -101,7 +102,7 @@ DJOSER = {
 
 # CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST')
+CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST')
 CORS_ALLOWED_ORIGIN_REGEXES = env.list('CORS_ALLOWED_ORIGIN_REGEXES')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",

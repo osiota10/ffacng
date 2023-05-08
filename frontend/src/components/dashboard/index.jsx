@@ -4,9 +4,29 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { UserInfoContext } from "./navBar";
+import { DownlineListContext, ReferralListContext, WithdrawalListContext, UserAccountInfoContext } from "./navBar";
 
 
 function DashboardHome() {
+    const downlineList = useContext(DownlineListContext)
+    const referralList = useContext(ReferralListContext)
+    const withdrawalList = useContext(WithdrawalListContext)
+    const userAccountInfo = useContext(UserAccountInfoContext)
+
+    // Downline List
+    const reversedList = downlineList.reverse();
+    const lastFourDownlines = reversedList.slice(0, 4);
+    const totalDownline = Object.keys(downlineList).length
+
+    //Referral List
+    const reversedReferralList = referralList.reverse();
+    const lastFourReferrals = reversedReferralList.slice(0, 4);
+
+    //Withdrawal List
+    const reversedWithdrawalList = withdrawalList.reverse();
+    const lastFourWithdrawals = reversedWithdrawalList.slice(0, 4)
+
+    //User Info
     const userInfo = useContext(UserInfoContext)
 
     return (
@@ -16,7 +36,7 @@ function DashboardHome() {
                     <div class="card">
                         <div class="card-body text-center" >
                             <p class="card-text">Total Balance</p>
-                            <h5 class="card-title">N18,000</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.balance}`}</h5>
                         </div>
                     </div>
                 </div>
@@ -24,7 +44,7 @@ function DashboardHome() {
                     <div class="card text-center">
                         <div class="card-body">
                             <p class="card-text">Total Downlines</p>
-                            <h5 class="card-title">35</h5>
+                            <h5 class="card-title">{totalDownline}</h5>
                         </div>
                     </div>
                 </div>
@@ -32,7 +52,7 @@ function DashboardHome() {
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="card-text">Match Bonus</p>
-                            <h5 class="card-title">N30,500</h5>
+                            <h5 class="card-title">0</h5>
                         </div>
                     </div>
                 </div>
@@ -40,7 +60,7 @@ function DashboardHome() {
                     <div class="card text-center">
                         <div class="card-body">
                             <p class="card-text">Referral Bonus</p>
-                            <h5 class="card-title">N50,000</h5>
+                            <h5 class="card-title">0</h5>
                         </div>
                     </div>
                 </div>
@@ -159,7 +179,7 @@ function DashboardHome() {
                     <div class="row">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Latest Referrals</h5>
+                                <h5 class="card-title text-center mb-2">Latest Referrals</h5>
                                 <section class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead class="table-primary">
@@ -170,19 +190,24 @@ function DashboardHome() {
                                             </tr>
                                         </thead>
 
-                                        <tbody>
-                                            <tr>
-                                                <td>Samuel</td>
-                                                <td>Samuel</td>
-                                                <td>Samuel</td>
-                                            </tr>
-                                        </tbody>
-
-                                        {/* <tbody>
-                                            <tr>
-                                                <td colspan="3" class="text-center">No Referrals yet</td>
-                                            </tr>
-                                        </tbody> */}
+                                        {Object.keys(referralList).length === 0
+                                            ?
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No Referrals yet</td>
+                                                </tr>
+                                            </tbody>
+                                            :
+                                            <tbody>
+                                                {lastFourReferrals.map((item) =>
+                                                    <tr>
+                                                        <td>{item.first_name}</td>
+                                                        <td>{item.last_name}</td>
+                                                        <td>{item.email}</td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        }
                                     </table>
                                     <Link to="/dashboard/referrals" className="d-grid btn btn-primary">See All</Link>
                                 </section>
@@ -193,7 +218,7 @@ function DashboardHome() {
                     <div class="row mt-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Latest Downlines</h5>
+                                <h5 class="card-title text-center mb-2">Latest Downlines</h5>
                                 <section class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead class="table-primary">
@@ -203,24 +228,26 @@ function DashboardHome() {
                                                 <th scope="col">Email</th>
                                             </tr>
                                         </thead>
+                                        {Object.keys(downlineList).length === 0
+                                            ?
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No Downline yet</td>
+                                                </tr>
 
-                                        <tbody>
+                                            </tbody>
+                                            :
+                                            <tbody>
+                                                {lastFourDownlines.map((item) => (
+                                                    <tr>
+                                                        <td>{item.first_name}</td>
+                                                        <td>{item.last_name}</td>
+                                                        <td>{item.email}</td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td>Samuel</td>
-                                                <td>Samuel</td>
-                                                <td>Samuel</td>
-                                            </tr>
-
-                                        </tbody>
-
-                                        {/* <tbody>
-                                            <tr>
-                                                <td colspan="3" class="text-center">No Downline yet</td>
-                                            </tr>
-
-                                        </tbody> */}
-
+                                                ))}
+                                            </tbody>
+                                        }
                                     </table>
                                     <Link to="/dashboard/downlines" className="d-grid btn btn-primary">See All</Link>
                                 </section>
@@ -231,7 +258,7 @@ function DashboardHome() {
                     <div class="row mt-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Withdrawal Requests</h5>
+                                <h5 class="card-title text-center mb-2">Withdrawal Requests</h5>
                                 <section class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead class="table-primary">
@@ -243,22 +270,26 @@ function DashboardHome() {
                                             </tr>
                                         </thead>
 
+                                        {Object.keys(withdrawalList).length === 0
+                                            ?
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">You are yet to make a Withdrawal Request</td>
+                                                </tr>
+                                            </tbody>
+                                            :
+                                            <tbody>
+                                                {lastFourWithdrawals.map((item) =>
+                                                    <tr>
+                                                        <td>{item.created_at}</td>
+                                                        <td>{item.amount}</td>
+                                                        <td>{item.status}</td>
+                                                        <td>{item.balance_before}</td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        }
 
-                                        <tbody>
-
-                                            <tr>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                            </tr>
-
-                                            {/* <tr>
-                                                <td colspan="4" class="text-center">You are yet to make a Withdrawal Request</td>
-                                            </tr> */}
-
-
-                                        </tbody>
                                     </table>
                                     <Link to="/dashboard/withdrawals" className="d-grid btn btn-primary">See All</Link>
                                 </section>

@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 from django.utils.html import strip_tags
 from django.conf import settings
 from .utils import generate_ref_code, generate_payment_pin
+from decimal import Decimal
 
 
 class UserAccountManager(BaseUserManager):
@@ -140,11 +141,40 @@ class Payment(models.Model):
         super().save(*args, **kwargs)
 
 
-# class PaymentProof(models.Model):
-#     payment = models.OneToOneField(
-#         Payment, on_delete=models.CASCADE, related_name='proof')
-#     date = models.DateField(auto_now_add=True)
-#     proof = CloudinaryField('image')
+class UserAccountInfo(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='balance')
+    balance = models.IntegerField(default=0)
 
-#     def get_image_url(self):
-#         return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.proof}")
+    def __str__(self):
+        return f"{self.user.email}'s balance: {self.balance}"
+
+
+class Withdrawal(models.Model):
+    STATUS = [
+        ('Pending', 'Pending'),
+        ('Rejected', 'Rejected'),
+        ('Approved', 'Approved')
+    ]
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    status = models.CharField(max_length=10, choices=STATUS, default='Pending')
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    balance_before = models.IntegerField(default=0)
+    balance_after = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        user_account = UserAccountInfo.objects.get(user=self.user)
+        balance_before = user_account.balance
+        self.balance_before = balance_before
+        balance_after = balance_before - int(self.amount)
+        self.balance_after = balance_after
+
+        if self.status == 'Approved':
+            # update user balance
+            user_account.balance = balance_after
+            user_account.save()
+
+        super().save(*args, **kwargs)
