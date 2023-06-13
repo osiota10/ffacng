@@ -14,15 +14,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 
-# def add_user(user_tuple, user_list):
-#     user = user_tuple[0]  # Extract the user from the tuple
-#     if user not in [item[0] for item in user_list]:
-#         user_list.append(user_tuple)
-#         print(f"User '{user}' added to the list.")
-#     else:
-#         print(f"User '{user}' already exists in the list.")
-
-
 def process_mlm_system():
     super_user = UserAccount.objects.filter(is_superuser=True).first()
     if super_user is not None:
