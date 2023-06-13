@@ -305,9 +305,11 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
                     <Modal.Header closeButton>
                         <Modal.Title>Profile Created</Modal.Title>
                     </Modal.Header>
+
                     <Modal.Body>
                         You have successfully created your Profile. Kindly Check your email to verify your profile
                     </Modal.Body>
+
                     <Modal.Footer>
                         <Button variant="btn btn-outline-primary" onClick={handleClose}>
                             Close

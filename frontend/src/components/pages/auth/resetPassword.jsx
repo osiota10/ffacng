@@ -112,9 +112,11 @@ function ResetPassword({ reset_password, error, status }) {
                         <Modal.Header closeButton>
                             <Modal.Title>Email Sent</Modal.Title>
                         </Modal.Header>
+
                         <Modal.Body>
                             Instructions to reset your password has be sent to your <span className="fw-bold"> email</span>
                         </Modal.Body>
+
                         <Modal.Footer>
                             <Button variant="btn btn-outline-primary" onClick={handleClose}>
                                 Close

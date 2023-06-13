@@ -77,7 +77,7 @@ function Login({ login, isAuthenticated, error }) {
                             <h3 className="text-center mb-2">Welcome Back!</h3>
                             {error ?
                                 <div className="alert alert-danger fw-bold mt-3" role="alert">
-                                    Invalid email/password
+                                    Invalid Email/Password
                                 </div>
                                 :
                                 null}

@@ -85,6 +85,7 @@ function ResetPasswordConfirm({ match, reset_password_confirm, error, status }) 
 
                                 <div class="mb-1">
                                     <label for="password1" class="form-label">New Password</label>
+
                                     <input
                                         type="password"
                                         class="form-control inputfield"

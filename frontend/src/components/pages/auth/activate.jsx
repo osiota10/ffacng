@@ -77,6 +77,7 @@ const Activate = ({ verify, error, status }) => {
                                     :
                                     null
                             }
+
                             <button
                                 onClick={verify_account}
                                 type='button'

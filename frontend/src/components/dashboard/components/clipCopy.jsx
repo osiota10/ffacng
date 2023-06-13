@@ -19,7 +19,7 @@ const CopyToClipboardButton = ({ text }) => {
     return (
         <>
             <Badge bg="primary" onClick={handleCopyToClipboard}>
-                {isCopied ? 'Copied!' : 'Copy to Clipboard'}
+                {isCopied ? 'Copied!!!' : 'Copy to Clipboard'}
             </Badge>
         </>
     );
