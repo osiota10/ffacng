@@ -7,9 +7,12 @@ import Modal from 'react-bootstrap/Modal';
 import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
 import { myStyle } from "./login";
+import LoaderIcon from "../../cards/utilities/spinner";
 
 
 function ResetPassword({ reset_password, error, status }) {
+    const [loading, setLoading] = useState(false);
+
     //Modal
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -27,7 +30,20 @@ function ResetPassword({ reset_password, error, status }) {
 
     const onSubmit = e => {
         e.preventDefault();
-        reset_password(email);
+        setLoading(true)
+
+        async function resetPasswordHandler() {
+            try {
+                await reset_password(email);
+                // handle successful Password Reset
+            } catch (error) {
+                // handle Password Reset error
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        resetPasswordHandler()
     };
 
     useEffect(() => {
@@ -73,7 +89,14 @@ function ResetPassword({ reset_password, error, status }) {
                                 </div>
 
                                 <section className="d-grid">
-                                    <button type="submit" class="btn btn-primary">Reset Password</button>
+                                    <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>
+                                        {loading
+                                            ?
+                                            <LoaderIcon />
+                                            :
+                                            "Reset Password"
+                                        }
+                                    </button>
                                 </section>
                                 <Link className="d-flex justify-content-center btn btn-outline-primary mt-2" to="/login">Back to Login</Link>
                             </form>

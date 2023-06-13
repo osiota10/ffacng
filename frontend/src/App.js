@@ -1,6 +1,6 @@
 import './main.css'
 import { useState, useEffect, createContext } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Home from './components/pages/home';
 import About from './components/pages/about';
@@ -29,6 +29,7 @@ import Payments from './components/dashboard/payments';
 import Referrals from './components/dashboard/referrals';
 import Support from './components/dashboard/support';
 import CreateAccount from './components/pages/auth/signup';
+import { isAuthenticated } from './components/cards/utilities/privateRoute';
 
 
 export const ServiceContext = createContext(null)
@@ -41,6 +42,7 @@ function App() {
   const [service, setService] = useState([]);
   const [companyInfo, setCompanyInfo] = useState([]);
   const [networkMarketing, setNetworkMarkeeting] = useState([]);
+  console.log(isAuthenticated())
 
   useEffect(() => {
     // Network Marketing
@@ -99,7 +101,7 @@ function App() {
                     <Route path="/dashboard/payments" element={<Payments />} />
                     <Route path="/dashboard/referrals" element={<Referrals />} />
                     <Route path="/dashboard/help-and-support" element={<Support />} />
-                  </Route>
+                  </Route >
 
                 </Routes>
               </BrowserRouter>

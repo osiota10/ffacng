@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { UserInfoContext } from "./navBar";
 import { DownlineListContext, ReferralListContext, WithdrawalListContext, UserAccountInfoContext } from "./navBar";
+import CopyToClipboardButton from "./components/clipCopy";
 
 
 function DashboardHome() {
@@ -13,6 +11,7 @@ function DashboardHome() {
     const withdrawalList = useContext(WithdrawalListContext)
     const userAccountInfo = useContext(UserAccountInfoContext)
 
+    console.log(userAccountInfo)
     // Downline List
     const reversedList = downlineList.reverse();
     const lastFourDownlines = reversedList.slice(0, 4);
@@ -36,7 +35,7 @@ function DashboardHome() {
                     <div class="card">
                         <div class="card-body text-center" >
                             <p class="card-text">Total Balance</p>
-                            <h5 class="card-title">{`N${userAccountInfo.balance}`}</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.total_balance}`}</h5>
                         </div>
                     </div>
                 </div>
@@ -52,7 +51,7 @@ function DashboardHome() {
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="card-text">Match Bonus</p>
-                            <h5 class="card-title">0</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.match_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>
@@ -60,7 +59,7 @@ function DashboardHome() {
                     <div class="card text-center">
                         <div class="card-body">
                             <p class="card-text">Referral Bonus</p>
-                            <h5 class="card-title">0</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.referral_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>
@@ -76,9 +75,11 @@ function DashboardHome() {
                                     alt="..." />
                             </section>
 
-                            <header class="text-center mb-1">
-                                <h4 class="card-title">Level 1</h4>
-                                <span class="badge rounded-pill bg-primary">active</span>
+                            <header className="text-center mb-1">
+                                <h4 className="card-title">Level {userAccountInfo.depth}</h4>
+                                <span className={userInfo.status === 'Active' ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-danger'}>
+                                    {userInfo.status}
+                                </span>
                             </header>
                             <section class="table-responsive">
                                 <table class="table ">
@@ -91,7 +92,12 @@ function DashboardHome() {
                                     <tbody>
                                         <tr>
                                             <td>Sponsored ID:</td>
-                                            <td>{userInfo.code}</td>
+                                            <td>
+                                                {userInfo.code}
+                                                <span className="ms-3">
+                                                    <CopyToClipboardButton text={userInfo.code} />
+                                                </span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>First Name:</td>

@@ -17,7 +17,7 @@ class UserInfoSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = user
         fields = ('id', 'first_name', 'last_name', 'phone_number', 'email', 'get_photo_url',
-                  'date_of_birth', 'gender', 'home_address', 'local_govt', 'state_of_origin',
+                  'date_of_birth', 'gender', 'home_address', 'status', 'local_govt', 'state_of_origin',
                   'nationality', 'image', 'code', 'bank_name', 'account_name', 'account_number', 'date_joined',
                   'local_govt', 'state_of_origin', 'recommended_by')
 
@@ -38,7 +38,7 @@ class RefCodeCheckSerializer(serializers.ModelSerializer):
 class MlmSystemUserSerializer(serializers.ModelSerializer):
     class Meta(UserSerializer.Meta):
         models = user
-        fields = ('id', 'date_joined', 'first_name',
+        fields = ('id', 'status', 'date_joined', 'first_name',
                   'last_name', 'email', 'phone_number')
 
 
@@ -50,6 +50,9 @@ class WithdrawalSerializer(serializers.ModelSerializer):
 
 
 class UserAccountInfoSerializer(serializers.ModelSerializer):
+    # depth = serializers.IntegerField()
+
     class Meta:
-        model = UserAccountInfo
-        fields = ['balance']
+        model = UserAccountBalance
+        fields = ('total_balance', 'match_bonus_earned',
+                  'referral_bonus_earned')

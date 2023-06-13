@@ -6,9 +6,12 @@ import { myStyle } from './login';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { CompanyInformationContext } from '../../../App';
+import LoaderIcon from '../../cards/utilities/spinner';
 
 
 const Activate = ({ verify, error, status }) => {
+    const [loading, setLoading] = useState(false);
+
     const companyInfo = useContext(CompanyInformationContext)
     const [verified, setVerified] = useState(false);
 
@@ -22,8 +25,21 @@ const Activate = ({ verify, error, status }) => {
     const navigate = useNavigate()
 
     const verify_account = e => {
-        verify(uid, token);
-        setVerified(true);
+        setLoading(true);
+
+        async function verifyHandler() {
+            try {
+                await verify(uid, token);
+                setVerified(true);
+                // handle successful login
+            } catch (error) {
+                // handle login error
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        verifyHandler()
     };
 
     useEffect(() => {
@@ -37,27 +53,25 @@ const Activate = ({ verify, error, status }) => {
             return navigate('/login')
         }
     }, 5000)
-    console.log(error)
+
     return (
         <section style={myStyle}>
             <section className="container py-6 reg-forms min-vh-100">
                 <section className="row">
-                    <Link to="/" className="text-decoration-none">
-                        <header className="text-center mb-5">
-                            <img src={companyInfo.get_logo_url} alt="" width="50" height="50" className="mx-auto" />
-                            <h5 className="mt-1">{companyInfo.company_name}</h5>
-                        </header>
-                    </Link>
-
                     <section className="col-lg-5 mx-auto">
                         <div className="card px-6 py-6 mx-auto bg-light">
-
+                            <Link to="/" className="text-decoration-none">
+                                <header className="text-center mb-5">
+                                    <img src={companyInfo.get_logo_url} alt="" width="50" height="50" className="mx-auto" />
+                                    <h5 className="mt-1">{companyInfo.company_name}</h5>
+                                </header>
+                            </Link>
                             <h4 className="text-center">Verify your Account</h4>
                             {
                                 error
                                     ?
 
-                                    <div class="alert alert-danger mt-2" role="alert">
+                                    <div class="alert alert-danger mt-2 text-center" role="alert">
                                         {error.token} {error.detail} <br /><Link className="text-decoration-none fw-bold" to="/login">Back to Login</Link>
                                     </div>
                                     :
@@ -66,9 +80,14 @@ const Activate = ({ verify, error, status }) => {
                             <button
                                 onClick={verify_account}
                                 type='button'
-                                className='btn btn-primary mt-2'
+                                className={loading ? 'btn btn-primary mt-2 disabled' : 'btn btn-primary mt-2'}
                             >
-                                Click here to Verify
+                                {loading
+                                    ?
+                                    <LoaderIcon />
+                                    :
+                                    "Click here to Verify"
+                                }
                             </button>
                         </div>
                     </section>

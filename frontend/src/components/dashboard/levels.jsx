@@ -1,9 +1,10 @@
 import { useState, useContext } from "react";
-import { DownlineListContext } from "./navBar";
+import { DownlineListContext, UserAccountInfoContext } from "./navBar";
 
 const Levels = () => {
     const downlineList = useContext(DownlineListContext)
     const totalDownline = Object.keys(downlineList).length
+    const userInfo = useContext(UserAccountInfoContext)
 
     return (
         <>
@@ -20,7 +21,7 @@ const Levels = () => {
                     <div class="card text-center">
                         <div class="card-body">
                             <p class="card-text">Referral Bonus</p>
-                            <h5 class="card-title">0</h5>
+                            <h5 class="card-title">{`N${userInfo.referral_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>
@@ -28,7 +29,7 @@ const Levels = () => {
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="card-text">Matching Bonus</p>
-                            <h5 class="card-title">0</h5>
+                            <h5 class="card-title">{`N${userInfo.match_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>

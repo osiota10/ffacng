@@ -11,7 +11,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = UserAccount
-        fields = ("first_name", "last_name", "email")
+        fields = ("first_name", "last_name", "email", "refferer_code_used")
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

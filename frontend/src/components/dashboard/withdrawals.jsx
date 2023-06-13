@@ -111,7 +111,7 @@ const Withdrawals = () => {
     const withdrawalListReversed = withdrawalList.reverse();
 
     const [withDrawalStatusData, setWithdralStatusData] = useState([]);
-
+    console.log(userAccountInfo)
     // Form Success
     const [showAddSuccess, setAddSuccessShow] = useState(false);
     const handleAddSuccessClose = () => setAddSuccessShow(false);
@@ -200,7 +200,7 @@ const Withdrawals = () => {
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="card-text">Available Withdrawal</p>
-                            <h5 class="card-title">{`N${userAccountInfo.balance}`}</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.total_balance}`}</h5>
                         </div>
                     </div>
                 </div>

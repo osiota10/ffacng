@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
 import { myStyle } from "./login";
 import { connect } from 'react-redux';
+import LoaderIcon from "../../cards/utilities/spinner";
 
 
 const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
@@ -60,7 +61,21 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-        createaccount(first_name, last_name, phone_number, email, referralCode, password, re_password);
+        setLoading(true)
+
+        async function signupHandler() {
+            try {
+                await createaccount(first_name, last_name, phone_number, email, referralCode, password, re_password);
+                // handle successful signup
+            } catch (error) {
+                // handle signup error
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        signupHandler()
+
     };
 
     useEffect(() => {
@@ -70,7 +85,7 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
         }
     }, [status]);
 
-    console.log(status)
+
     return (
         <section style={myStyle}>
             <section class="container reg-forms min-vh-100">
@@ -108,11 +123,10 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
                                             <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>
                                                 {loading
                                                     ?
-                                                    <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                                    <LoaderIcon />
                                                     :
-                                                    null
+                                                    "Check Referral Code"
                                                 }
-                                                Check Referral Code
                                             </button>
                                         </section>
                                     </form>
@@ -261,7 +275,14 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
                                         </div>
 
                                         <section className="d-grid">
-                                            <button type="submit" class="btn btn-primary">Create Account</button>
+                                            <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>
+                                                {loading
+                                                    ?
+                                                    <LoaderIcon />
+                                                    :
+                                                    "Create Account"
+                                                }
+                                            </button>
                                         </section>
                                     </form>
                                 </>
@@ -303,4 +324,4 @@ const mapStateToProps = state => ({
     error: state.auth.error,
     status: state.auth.status
 });
-export default connect(mapStateToProps, { createaccount })(CreateAccount);;
+export default connect(mapStateToProps, { createaccount })(CreateAccount);

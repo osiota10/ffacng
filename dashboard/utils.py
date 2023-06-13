@@ -1,5 +1,6 @@
 from django.conf import settings
 import uuid
+from .models import *
 
 # Generate Profile ID
 
@@ -13,46 +14,6 @@ def generate_ref_code():
 def generate_payment_pin():
     pin = str(uuid.uuid4()).replace("-", "")[:5]
     return pin
-
-# MLMSystem
-# class Member:
-#     def __init__(self, name, level):
-#         self.name = name
-#         self.level = level
-#         self.referrals = []
-#         self.match_bonus = 0
-
-#     def add_referral(self, referral):
-#         self.referrals.append(referral)
-
-#     def calculate_match_bonus(self):
-#         if len(self.referrals) >= 2:
-#             left_child = self.referrals[0]
-#             right_child = self.referrals[1]
-#             self.match_bonus += min(left_child.level, right_child.level) * 100
-#             left_child.calculate_match_bonus()
-#             right_child.calculate_match_bonus()
-
-
-# class MLMSystem:
-#     def __init__(self):
-#         self.root_member = Member("Root", 0)
-#         self.member_dict = {"Root": self.root_member}
-
-#     def add_member(self, name, referrer_name):
-#         referrer = self.member_dict[referrer_name]
-#         level = referrer.level + 1
-#         if level <= 9:
-#             member = Member(name, level)
-#             referrer.add_referral(member)
-#             self.member_dict[name] = member
-#         else:
-#             print("Binary tree depth limit exceeded.")
-
-#     def calculate_match_bonuses(self):
-#         self.root_member.calculate_match_bonus()
-#         for name, member in self.member_dict.items():
-#             print(f"{name}: {member.match_bonus}")
 
 
 # Let's go through the code in more detail:
@@ -69,28 +30,13 @@ def generate_payment_pin():
 class User:
     def __init__(self, name, parent=None):
         self.name = name
-        self.referral_bonus = 0
-        self.match_bonus = 0
         self.parent = parent
         self.left_child = None
         self.right_child = None
         self.depth = 0
 
-        # if parent:
-        #     self.depth = parent.depth + 1
-        #     if not parent.left_child:
-        #         parent.left_child = self
-        # else:
-        #     parent.right_child = self
-
     def __str__(self):
-        return f"{self.name} (referral bonus: {self.referral_bonus}, match bonus: {self.match_bonus})"
-
-    def add_referral_bonus(self, amount):
-        self.referral_bonus += amount
-
-    def add_match_bonus(self, amount):
-        self.match_bonus += amount
+        return f"{self.name}"
 
 
 class MLMSystem:
@@ -116,7 +62,7 @@ class MLMSystem:
         elif not parent.right_child:
             parent.right_child = new_user
         else:
-            # find the leftmost available position in the bottom row
+            depth = parent.depth + 1
             queue = [parent.left_child, parent.right_child]
             while queue:
                 node = queue.pop(0)
@@ -128,27 +74,11 @@ class MLMSystem:
                     break
                 queue.append(node.left_child)
                 queue.append(node.right_child)
+                depth += 1
 
-        new_user.depth = parent.depth + 1
+            new_user.depth = depth
+
         self.users[name] = new_user
-
-        # update match bonus for the new user and its parents
-        # self.update_match_bonus(new_user)
-
-    # def update_match_bonus(self, user):
-    #     if user.depth > 9:
-    #         return
-    #     downlines = user.get_downlines()
-    #     total_referral_bonus = sum(
-    #         downline.referral_bonus for downline in downlines)
-    #     user.add_match_bonus(total_referral_bonus)
-    #     if user.parent:
-    #         self.update_match_bonus(user.parent)
-
-    # def add_referral_bonus(self, name, amount):
-    #     user = self.find_user(name, self.root)
-    #     user.add_referral_bonus(amount)
-    #     self.update_match_bonus(user)
 
     def find_user(self, name, node=None):
         if not node:
@@ -203,14 +133,16 @@ class MLMSystem:
             if user.left_child:
                 self._print_binary_tree(user.left_child, level + 1)
 
-    def get_downline_by_depth(self, name):
+    def get_downline_by_depth(self, name, depth):
         user = self.users.get(name)
         if not user:
             return None
 
         downline = []
         level = [user]
-        while level:
+        current_depth = 0
+
+        while level and current_depth <= depth:
             next_level = []
             for node in level:
                 downline.append(node.name)
@@ -219,6 +151,8 @@ class MLMSystem:
                 if node.right_child:
                     next_level.append(node.right_child)
             level = next_level
+            current_depth += 1
+
         return downline
 
     def find_user_depth(self, name):
@@ -236,3 +170,25 @@ class MLMSystem:
             self._calculate_levels(node.left_child, level + 1, levels)
         if node.right_child:
             self._calculate_levels(node.right_child, level + 1, levels)
+
+    def count_users_by_depth_for_user(mlm_system, username):
+        user = mlm_system.find_user(username)
+        if not user:
+            raise ValueError(f"User '{username}' not found")
+
+        # Initialize a list to store counts for each depth (up to 6th depth)
+        depth_counts = [0] * 6
+
+        def traverse(node, depth):
+            if depth > 6:
+                return
+            if depth >= user.depth + 1:  # Check if the depth is greater than or equal to the next depth after the user's depth
+                depth_counts[depth - user.depth - 1] += 1
+            if node.left_child:
+                traverse(node.left_child, depth + 1)
+            if node.right_child:
+                traverse(node.right_child, depth + 1)
+
+        # Start counting from the next depth after the user's depth
+        traverse(user, user.depth)
+        return depth_counts

@@ -5,7 +5,8 @@ from ckeditor.fields import RichTextField
 from django.utils.html import strip_tags
 from django.conf import settings
 from .utils import generate_ref_code, generate_payment_pin
-from decimal import Decimal
+from django.core.validators import RegexValidator
+from django.utils import timezone
 
 
 class UserAccountManager(BaseUserManager):
@@ -44,18 +45,24 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         ('Female', 'Female')
     ]
 
+    STATUS = [
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive')
+    ]
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    phone_number = models.IntegerField(null=True, blank=True)
+    phone_number = models.CharField(null=True, blank=True, max_length=11, validators=[
+                                    RegexValidator(r'^\d{11}$', 'Enter a valid phone number.')])
     date_of_birth = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(null=True, blank=True)
+    date_joined = models.DateTimeField(default=timezone.now)
     image = CloudinaryField('image', null=True, blank=True)
     gender = models.CharField(max_length=7, blank=True,
                               null=True, choices=GENDER)
+    status = models.CharField(max_length=9, choices=STATUS, default='Inactive')
     home_address = models.TextField(null=True, blank=True)
     local_govt = models.CharField(max_length=255, null=True, blank=True)
     state_of_origin = models.CharField(max_length=255, null=True, blank=True)
@@ -65,7 +72,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     account_number = models.CharField(max_length=10, blank=True, null=True)
     code = models.CharField(max_length=12, blank=True)
     recommended_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CharField, blank=True, null=True, related_name='ref_by')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='ref_by')
     refferer_code_used = models.CharField(max_length=12, blank=True)
 
     objects = UserAccountManager()
@@ -76,10 +83,13 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     ordering = ('email',)
 
     def get_full_name(self):
-        return self.first_name
+        return f'{self.first_name} {self.last_name}'
 
     def get_short_name(self):
         return self.first_name
+
+    def get_date_only(self):
+        return self.date_joined.date()
 
     def get_image_url(self):
         return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.image}")
@@ -92,7 +102,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
             return "https://cdn-icons-png.flaticon.com/512/147/147142.png"
 
     def save(self, *args, **kwargs):
-        if self.code == "":
+        if self.status == "Active" and self.code == "":
             code = generate_ref_code()
             self.code = code
 
@@ -108,6 +118,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
                 self.recommended_by = ''
             else:
                 self.recommended_by = current_reffer
+
+        if not self.id:  # Only set the date_joined if the user is being created
+            self.date_joined = timezone.now()
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -120,13 +134,14 @@ class Payment(models.Model):
         ('Rejected', 'Rejected'),
         ('Approved', 'Approved')
     ]
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     pin = models.CharField(max_length=5, blank=True)
-    amount = models.IntegerField()
+    amount = models.IntegerField(default=15500)
     status = models.CharField(max_length=10, choices=STATUS, default='Pending')
     payment_proof = CloudinaryField('image', blank=True, null=True)
+    is_reg_bonus_credited = models.BooleanField(default=False)
 
     def get_image_url(self):
         return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.payment_proof}")
@@ -141,15 +156,6 @@ class Payment(models.Model):
         super().save(*args, **kwargs)
 
 
-class UserAccountInfo(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='balance')
-    balance = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.user.email}'s balance: {self.balance}"
-
-
 class Withdrawal(models.Model):
     STATUS = [
         ('Pending', 'Pending'),
@@ -161,20 +167,90 @@ class Withdrawal(models.Model):
     amount = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS, default='Pending')
     created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     balance_before = models.IntegerField(default=0)
     balance_after = models.IntegerField(default=0)
+    is_total_balance_updated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - Requested to withdraw {self.amount}"
+
+
+class UserAccountBalance(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='balance')
+    total_balance = models.IntegerField(default=0)
+    match_bonus_earned = models.IntegerField(
+        default=0,
+        help_text="Match bonus earned by the user"
+    )
+    referral_bonus_earned = models.IntegerField(
+        default=0,
+        help_text="Referral bonus earned by the user"
+    )
+
+    def __str__(self):
+        return f"{self.user.email}'s balance: {self.total_balance} Match Bonus: {self.match_bonus_earned}"
+
+
+class MatchBonus(models.Model):
+    date_created = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='credited_depths', on_delete=models.CASCADE)
+    user_depth = models.IntegerField()
+    credited_amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"MatchBonus(user={self.user}, credited_depth={self.user_depth}, credited_amount={self.credited_amount})"
+
+    class Meta:
+        verbose_name_plural = "Match Bonuses"
+
+
+class ReferralBonus(models.Model):
+    date_created = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='referral', on_delete=models.CASCADE)
+    # user_depth = models.IntegerField()
+    referred_user_full_name = models.CharField(
+        max_length=50, null=True, blank=True)
+    referred_user_email = models.EmailField(null=True, blank=True)
+    credited_amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Referral Bonus(user={self.user}, credited_amount={self.credited_amount})"
+
+    class Meta:
+        verbose_name_plural = "Referral Bonuses"
+
+
+class UserNotification(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notification')
+    subject = models.CharField(max_length=225)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - {self.subject}"
+
+
+class ActiveUser(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='active_user')
+    full_name = models.CharField(max_length=225)
+    email = models.EmailField()
+    recommended_by = models.CharField(blank=True, null=True, max_length=225)
+    is_superuser = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.user)
 
     def save(self, *args, **kwargs):
-        user_account = UserAccountInfo.objects.get(user=self.user)
-        balance_before = user_account.balance
-        self.balance_before = balance_before
-        balance_after = balance_before - int(self.amount)
-        self.balance_after = balance_after
-
-        if self.status == 'Approved':
-            # update user balance
-            user_account.balance = balance_after
-            user_account.save()
-
+        if self.user:
+            self.full_name = self.user.get_full_name()
+            self.email = self.user.email
+            self.recommended_by = self.user.recommended_by
+            self.is_superuser = self.user.is_superuser
         super().save(*args, **kwargs)

@@ -15,6 +15,7 @@ function Items({ currentItems }) {
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone Number</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
 
@@ -25,6 +26,7 @@ function Items({ currentItems }) {
                                 <td>{item.first_name} {item.last_name}</td>
                                 <td>{item.email}</td>
                                 <td>{item.phone_number}</td>
+                                <td><span className={item.status === 'Active' ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-danger'}>{item.status}</span></td>
                             </tr>
                         ))}
 
@@ -103,7 +105,7 @@ function PaginatedItems({ itemsPerPage, data }) {
 const Downlines = () => {
     const downlineList = useContext(DownlineListContext)
     const totalDownline = Object.keys(downlineList).length
-    const expectedDownline = 300
+    const expectedDownline = 126
     const remainingDownline = expectedDownline - totalDownline
 
     return (

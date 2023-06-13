@@ -4,6 +4,7 @@ import { login } from "../../../actions/auth";
 import { connect } from 'react-redux';
 import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
+import LoaderIcon from "../../cards/utilities/spinner";
 
 const pic = {
     url: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
@@ -39,8 +40,20 @@ function Login({ login, isAuthenticated, error }) {
     const onSubmit = e => {
         e.preventDefault();
         setLoading(true)
-        login(email, password);
-        setLoading(false)
+
+        async function loginHandler() {
+            try {
+                await login(email, password);
+                // handle successful login
+            } catch (error) {
+                // handle login error
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loginHandler()
+
     };
 
 
@@ -95,7 +108,14 @@ function Login({ login, isAuthenticated, error }) {
                                 </div>
 
                                 <section className="d-grid">
-                                    <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>Login</button>
+                                    <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>
+                                        {loading
+                                            ?
+                                            <LoaderIcon />
+                                            :
+                                            "Login"
+                                        }
+                                    </button>
                                 </section>
 
 

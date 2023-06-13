@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
-import { ReferralListContext, UserInfoContext } from "./navBar";
+import { ReferralListContext, UserInfoContext, UserAccountInfoContext } from "./navBar";
 import ReactPaginate from "react-paginate";
+import CopyToClipboardButton from "./components/clipCopy";
 
 function Items({ currentItems }) {
     return (
@@ -15,6 +16,7 @@ function Items({ currentItems }) {
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone Number</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
 
@@ -25,6 +27,7 @@ function Items({ currentItems }) {
                                 <td>{item.first_name} {item.last_name}</td>
                                 <td>{item.email}</td>
                                 <td>{item.phone_number}</td>
+                                <td><span className={item.status === 'Active' ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-danger'}>{item.status}</span></td>
                             </tr>
                         ))}
 
@@ -104,12 +107,16 @@ const Referrals = () => {
     const userInfo = useContext(UserInfoContext)
     const referralList = useContext(ReferralListContext)
     const totalReferrals = Object.keys(referralList).length
+    const userAccountInfo = useContext(UserAccountInfoContext)
 
     return (
         <>
             <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
                 <div class="col">
                     <div class="card">
+                        <section className="text-center">
+                            <CopyToClipboardButton text={userInfo.code} />
+                        </section>
                         <div class="card-body text-center">
                             <p class="card-text">Referral ID</p>
                             <h5 class="card-title">{userInfo.code}</h5>
@@ -128,7 +135,7 @@ const Referrals = () => {
                     <div class="card">
                         <div class="card-body text-center">
                             <p class="card-text">Referrals Earnings</p>
-                            <h5 class="card-title">N30,500</h5>
+                            <h5 class="card-title">{`N${userAccountInfo.referral_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>

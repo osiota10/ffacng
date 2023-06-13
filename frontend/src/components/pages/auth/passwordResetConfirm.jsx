@@ -7,9 +7,12 @@ import Modal from 'react-bootstrap/Modal';
 import { useContext } from "react";
 import { CompanyInformationContext } from "../../../App";
 import { myStyle } from "./login";
+import LoaderIcon from "../../cards/utilities/spinner";
 
 
 function ResetPasswordConfirm({ match, reset_password_confirm, error, status }) {
+    const [loading, setLoading] = useState(false);
+
     const companyInfo = useContext(CompanyInformationContext)
 
     //Modal
@@ -33,7 +36,20 @@ function ResetPasswordConfirm({ match, reset_password_confirm, error, status }) 
     const onSubmit = e => {
         e.preventDefault();
 
-        reset_password_confirm(uid, token, new_password, re_new_password);
+        setLoading(true)
+
+        async function resetPasswordConfirmHandler() {
+            try {
+                await reset_password_confirm(uid, token, new_password, re_new_password);
+                // handle successful reset
+            } catch (error) {
+                // handle reset error
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        resetPasswordConfirmHandler()
     };
 
     useEffect(() => {
@@ -66,16 +82,7 @@ function ResetPasswordConfirm({ match, reset_password_confirm, error, status }) 
 
                             <form onSubmit={e => onSubmit(e)} class="mt-3">
                                 <h5 class="text-center">Enter New Password</h5>
-                                {
-                                    error
-                                        ?
 
-                                        <div class="alert alert-danger mt-2" role="alert">
-                                            Password Reset Link has been used <Link className="text-decoration-none fw-bold" to="/login">Back to Login</Link>
-                                        </div>
-                                        :
-                                        null
-                                }
                                 <div class="mb-1">
                                     <label for="password1" class="form-label">New Password</label>
                                     <input
@@ -117,7 +124,18 @@ function ResetPasswordConfirm({ match, reset_password_confirm, error, status }) 
                                         :
                                         null}
                                 </div>
-                                <button type="submit" class="btn btn-primary form-control">Create New Password</button>
+
+                                <section className="d-grid">
+                                    <button type="submit" className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>
+                                        {loading
+                                            ?
+                                            <LoaderIcon />
+                                            :
+                                            "Create New Password"
+                                        }
+                                    </button>
+                                </section>
+
                             </form>
                         </div>
                     </section>
