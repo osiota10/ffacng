@@ -15,7 +15,7 @@ COPY frontend/ .
 RUN npm run build
 
 # Backend stage
-FROM railwayapp/python:3.9 AS backend
+FROM railwayapp/python:3.10.2 AS backend
 WORKDIR /app
 
 # Copy backend code
