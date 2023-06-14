@@ -14,12 +14,19 @@ class UserCreateSerializer(UserCreateSerializer):
 
 
 class UserInfoSerializer(UserSerializer):
+    recommended_by_email = serializers.SerializerMethodField()
+
     class Meta(UserSerializer.Meta):
         model = user
         fields = ('id', 'first_name', 'last_name', 'phone_number', 'email', 'get_photo_url',
                   'date_of_birth', 'gender', 'home_address', 'status', 'local_govt', 'state_of_origin',
                   'nationality', 'image', 'code', 'bank_name', 'account_name', 'account_number', 'date_joined',
-                  'local_govt', 'state_of_origin', 'recommended_by')
+                  'local_govt', 'state_of_origin', 'recommended_by', 'recommended_by_email')
+
+    def get_recommended_by_email(self, obj):
+        if obj.recommended_by:
+            return f'{obj.recommended_by.first_name} {obj.recommended_by.last_name} - {obj.recommended_by.email}'
+        return None
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -50,9 +57,9 @@ class WithdrawalSerializer(serializers.ModelSerializer):
 
 
 class UserAccountInfoSerializer(serializers.ModelSerializer):
-    # depth = serializers.IntegerField()
+    depth = serializers.IntegerField()
 
     class Meta:
         model = UserAccountBalance
         fields = ('total_balance', 'match_bonus_earned',
-                  'referral_bonus_earned')
+                  'referral_bonus_earned', 'depth')

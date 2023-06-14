@@ -125,7 +125,7 @@ function DashboardHome() {
                                         </tr>
                                         <tr>
                                             <td>Introduced by:</td>
-                                            <td>{userInfo.recommended_by}</td>
+                                            <td>{userInfo.recommended_by_email}</td>
                                         </tr>
                                         <tr>
                                             <td>Date Joined:</td>
