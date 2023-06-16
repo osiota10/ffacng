@@ -63,3 +63,9 @@ class UserAccountInfoSerializer(serializers.ModelSerializer):
         model = UserAccountBalance
         fields = ('total_balance', 'match_bonus_earned',
                   'referral_bonus_earned', 'depth')
+
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNotification
+        fields = '__all__'

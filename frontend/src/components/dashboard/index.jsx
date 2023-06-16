@@ -11,7 +11,7 @@ function DashboardHome() {
     const withdrawalList = useContext(WithdrawalListContext)
     const userAccountInfo = useContext(UserAccountInfoContext)
 
-    console.log(userAccountInfo)
+
     // Downline List
     const reversedList = downlineList.reverse();
     const lastFourDownlines = reversedList.slice(0, 4);

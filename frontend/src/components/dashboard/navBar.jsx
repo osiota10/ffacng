@@ -8,6 +8,7 @@ import Popover from 'react-bootstrap/Popover';
 import Button from 'react-bootstrap/Button';
 import { useEffect } from "react";
 import axios from "axios";
+import NotificationCard from "./components/notificationCard";
 
 export const UserInfoContext = createContext(null)
 export const DownlineListContext = createContext(null)
@@ -15,14 +16,6 @@ export const ReferralListContext = createContext(null)
 export const WithdrawalListContext = createContext(null)
 export const UserAccountInfoContext = createContext(null)
 
-const popover = (
-    <Popover id="popover-basic">
-        <Popover.Header as="h3">Notifications</Popover.Header>
-        <Popover.Body>
-            No Notifications
-        </Popover.Body>
-    </Popover>
-);
 
 function DashboardSideBar({ logout, isAuthenticated }) {
     const [redirect, setRedirect] = useState(false);
@@ -31,11 +24,22 @@ function DashboardSideBar({ logout, isAuthenticated }) {
     const [refferalData, setRefferalData] = useState([]);
     const [withdrawalData, setWithdrawalData] = useState([]);
     const [userAccountInfo, setUserAccountinfo] = useState([]);
+    const [newNotification, setNewNotification] = useState(false);
 
     const logout_user = () => {
         logout();
         setRedirect(true);
     };
+
+    const handleNewNotification = (notification) => {
+        setNewNotification(notification)
+    }
+
+    const popover = (
+        <Popover id="popover-basic" className="shadow">
+            <NotificationCard popover={true} onNewNotification={handleNewNotification} />
+        </Popover>
+    );
 
     const navigate = useNavigate();
     // setTimeout(() => {
@@ -202,24 +206,24 @@ function DashboardSideBar({ logout, isAuthenticated }) {
 
                                 {toggleSideMenu
                                     ?
-                                    <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
-                                        <ul class="nav flex-column text-white w-100">
-                                            <p class="nav-link h3 text-white my-2">
+                                    <div className="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
+                                        <ul className="nav flex-column text-white w-100">
+                                            <p className="nav-link h3 text-white my-2">
                                                 <img src={userInfo.get_photo_url} className="rounded-circle mx-auto me-1" width="40" height="40" alt="..." />
                                                 <span></span>
                                                 Hi, {userInfo.first_name}
                                             </p>
                                             <li className='nav-link text-white py-1'>
                                                 <NavLink to="/dashboard" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-house"></i>
-                                                    <span class="ms-1 d-sm-inline">Dashboard</span>
+                                                    <i className="fs-6 fa-solid fa-house"></i>
+                                                    <span className="ms-1 d-sm-inline">Dashboard</span>
                                                 </NavLink>
                                             </li>
 
                                             <li class='nav-link py-1'>
                                                 <NavLink to="/dashboard/Withdrawals" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-money-bill-transfer"></i>
-                                                    <span class="ms-1 d-sm-inline">Withdrawals</span>
+                                                    <i className="fs-6 fa-solid fa-money-bill-transfer"></i>
+                                                    <span className="ms-1 d-sm-inline">Withdrawals</span>
                                                 </NavLink>
                                             </li>
 
@@ -232,36 +236,43 @@ function DashboardSideBar({ logout, isAuthenticated }) {
 
                                             <li class="nav-link py-1">
                                                 <NavLink to="/dashboard/downlines" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-timeline"></i>
-                                                    <span class="ms-1 d-sm-inline">Downlines</span>
+                                                    <i className="fs-6 fa-solid fa-timeline"></i>
+                                                    <span className="ms-1 d-sm-inline">Downlines</span>
                                                 </NavLink>
                                             </li>
 
                                             <li class='nav-link py-1'>
                                                 <NavLink to="/dashboard/payments" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-key"></i>
-                                                    <span class="ms-1 d-sm-inline">Payment PIN</span>
+                                                    <i className="fs-6 fa-solid fa-key"></i>
+                                                    <span className="ms-1 d-sm-inline">Payment PIN</span>
                                                 </NavLink>
                                             </li>
 
                                             <li class="nav-link py-1">
                                                 <NavLink to="/dashboard/referrals" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-users"></i>
-                                                    <span class="ms-1 d-sm-inline">Referrals</span>
+                                                    <i className="fs-6 fa-solid fa-users"></i>
+                                                    <span className="ms-1 d-sm-inline">Referrals</span>
                                                 </NavLink>
                                             </li>
 
                                             <li class="nav-link py-1">
                                                 <NavLink to="/dashboard/help-and-support" end className='text-decoration-none' aria-current="page">
-                                                    <i class="fs-6 fa-solid fa-circle-info"></i>
-                                                    <span class="ms-1 d-sm-inline">Help and Support</span>
+                                                    <i className="fs-6 fa-solid fa-circle-info"></i>
+                                                    <span className="ms-1 d-sm-inline">Help and Support</span>
+                                                </NavLink>
+                                            </li>
+
+                                            <li class="nav-link py-1">
+                                                <NavLink to="/dashboard/notifications" end className='text-decoration-none' aria-current="page">
+                                                    <i className="fs-6 fa-solid fa-bell"></i>
+                                                    <span className="ms-1 d-sm-inline">Notifications</span>
                                                 </NavLink>
                                             </li>
                                         </ul>
 
                                         <div>
-                                            <a class="nav-link pb-4 text-decoration-none" href="#" onClick={logout_user}><i class="fs-6 uil uil-signout"></i><span
-                                                class="ms-1 d-sm-inline">Sign Out</span></a>
+                                            <a className="nav-link pb-4 text-decoration-none" href="#" onClick={logout_user}><i class="fs-6 uil uil-signout"></i><span
+                                                className="ms-1 d-sm-inline">Sign Out</span></a>
                                         </div>
                                     </div>
                                     :
@@ -277,11 +288,11 @@ function DashboardSideBar({ logout, isAuthenticated }) {
 
 
                                             <section>
-                                                <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
+                                                <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose>
                                                     <span className="me-3 position-relative" >
                                                         <i className="fs-5 fa-solid fa-bell text-primary">
-                                                            <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1">
-                                                                <span class="visually-hidden">
+                                                            <span className={newNotification ? "position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1" : "position-absolute top-0 start-100 translate-middle"}>
+                                                                <span className="visually-hidden">
                                                                     unread messages
                                                                 </span>
                                                             </span>
@@ -297,8 +308,8 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                                     </section>
 
                                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-                                                        <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-                                                        <li><a class="dropdown-item" href="#" onClick={logout_user}>Sign Out</a></li>
+                                                        <li><a className="dropdown-item" href="#">Edit Profile</a></li>
+                                                        <li><a className="dropdown-item" href="#" onClick={logout_user}>Sign Out</a></li>
                                                     </ul>
                                                 </div>
                                             </section>

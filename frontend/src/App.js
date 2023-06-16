@@ -30,6 +30,7 @@ import Referrals from './components/dashboard/referrals';
 import Support from './components/dashboard/support';
 import CreateAccount from './components/pages/auth/signup';
 import { isAuthenticated } from './components/cards/utilities/privateRoute';
+import Notifications from './components/dashboard/notification';
 
 
 export const ServiceContext = createContext(null)
@@ -101,6 +102,7 @@ function App() {
                     <Route path="/dashboard/payments" element={<Payments />} />
                     <Route path="/dashboard/referrals" element={<Referrals />} />
                     <Route path="/dashboard/help-and-support" element={<Support />} />
+                    <Route path="/dashboard/notifications" element={<Notifications />} />
                   </Route >
 
                 </Routes>

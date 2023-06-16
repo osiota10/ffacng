@@ -139,6 +139,22 @@ class UserAccountInfoView(generics.RetrieveAPIView):
         return user_account_info
 
 
+class UserNotificationView(APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, *args, **kwargs):
+        notifications = UserNotification.objects.filter(user=request.user)
+        serializer = UserNotificationSerializer(notifications, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        notification_id = request.data.get('notificationId')
+        notification = UserNotification.objects.get(id=notification_id)
+        notification.is_read = True
+        notification.save()
+        return Response({'detail': 'Notification marked as read.'})
+
+
 # Match Bonus Crediting
 def credit_users(user_email, user_downline_by_depth, expected_users_by_depth, amounts_to_credit):
     credited_users = []
