@@ -31,6 +31,7 @@ import Support from './components/dashboard/support';
 import CreateAccount from './components/pages/auth/signup';
 import { isAuthenticated } from './components/cards/utilities/privateRoute';
 import Notifications from './components/dashboard/notification';
+import ScrollToTop from './components/dashboard/components/scrollToTop';
 
 
 export const ServiceContext = createContext(null)
@@ -72,6 +73,7 @@ function App() {
           <ServiceContext.Provider value={service}>
             <NetworkMarketingContext.Provider value={networkMarketing}>
               <BrowserRouter>
+                <ScrollToTop />
                 <Routes>
                   <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
