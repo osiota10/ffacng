@@ -1,6 +1,6 @@
 # Stage 1: Build React app
 FROM node:14 as build-stage
-WORKDIR /
+WORKDIR /app
 
 # Pass environment variables as build arguments
 ARG REACT_APP_API_URL
@@ -46,4 +46,3 @@ RUN /opt/venv/bin/python manage.py collectstatic --no-input
 
 # Start Gunicorn server for Django
 CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000"]
-
