@@ -17,6 +17,7 @@ WORKDIR /app
 
 # Copy the Django backend files
 COPY requirements.txt ./
+COPY manage.py ./
 COPY . .
 
 # Create and activate a virtual environment
@@ -43,7 +44,7 @@ COPY --from=backend-stage /app .
 COPY --from=build-stage /app/build ./frontend/build
 
 # Set the working directory to the Django project root
-WORKDIR /app/backend
+# WORKDIR /app/backend
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
