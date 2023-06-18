@@ -47,6 +47,9 @@ COPY --from=build-stage /app/build ./frontend/build
 # Set the working directory to the Django project root
 # WORKDIR /app/backend
 
+# Install gunicorn
+RUN /opt/venv/bin/pip install gunicorn
+
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
 
