@@ -59,4 +59,4 @@ EXPOSE 8000
 # RUN /opt/venv/bin/python manage.py collectstatic --no-input --clear --link
 
 # Start Gunicorn server for Django
-CMD ["/opt/venv/bin/gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
+# CMD ["/opt/venv/bin/gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
