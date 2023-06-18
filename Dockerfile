@@ -26,6 +26,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install gunicorn
 
 
 # Stage 3: Combine React and Django
