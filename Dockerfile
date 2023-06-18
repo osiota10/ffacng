@@ -14,11 +14,18 @@ RUN npm run build
 # Stage 2: Build Django backend
 FROM python:3.10 as backend-stage
 WORKDIR /app
+
+# Copy the Django backend files
 COPY requirements.txt ./
+COPY . .
+
+# Create and activate a virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
-COPY . .
+
 
 # Stage 3: Combine React and Django
 FROM python:3.10
@@ -34,6 +41,9 @@ COPY --from=backend-stage /app .
 
 # Copy built React app from the previous stage
 COPY --from=build-stage /app/build ./frontend/build
+
+# Set the working directory to the Django project root
+WORKDIR /app/backend
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
