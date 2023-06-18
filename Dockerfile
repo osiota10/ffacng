@@ -6,6 +6,10 @@ WORKDIR /app
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
+# Set the Railway environment variables
+ARG RAILWAY_ENVIRONMENT
+ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
+
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend ./
@@ -32,10 +36,6 @@ RUN pip install gunicorn
 # Stage 3: Combine React and Django
 FROM python:3.10
 WORKDIR /app
-
-# Set the Railway environment variables
-ARG RAILWAY_ENVIRONMENT
-ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
 
 # Copy Django backend from the previous stage
 COPY --from=backend-stage /opt/venv /opt/venv
