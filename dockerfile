@@ -25,7 +25,7 @@ COPY . .
 FROM python:3.10
 WORKDIR /app
 
-# Set the Railway environment variable
+# Set the Railway environment variables
 ARG RAILWAY_ENVIRONMENT
 ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
 
