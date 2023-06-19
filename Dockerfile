@@ -30,8 +30,6 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN pip install gunicorn
-
 
 # Stage 3: Combine React and Django
 FROM python:3.10
@@ -45,12 +43,15 @@ COPY --from=backend-stage /app .
 COPY --from=build-stage /app/build ./frontend/build
 
 # Set the working directory to the Django project root
-# WORKDIR /app/backend
+WORKDIR /app/backend
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
 
 # Set environment variables if needed
 
+# Run collectstatic to gather static files
+RUN /opt/venv/bin/python manage.py collectstatic --no-input --clear --link
+
 # Start Gunicorn server for Django
-CMD ["/opt/venv/bin/gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/opt/venv/bin/gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
