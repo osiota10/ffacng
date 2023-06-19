@@ -45,7 +45,7 @@ COPY --from=backend-stage /app .
 COPY --from=build-stage /app/build ./frontend/build
 
 # Set the working directory to the Django project root
-WORKDIR /app
+# WORKDIR /app
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
