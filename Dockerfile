@@ -29,13 +29,10 @@ COPY requirements.txt ./
 COPY manage.py ./
 COPY . ./
 
-# Create and activate a virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
-
-# Install Python dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Create and Activate Virtual Environment
+RUN python -m venv --copies /opt/venv && \
+    . /opt/venv/bin/activate && \
+    pip install -r requirements.txt
 
 # Stage 3: Combine React and Django
 FROM python:3.10
