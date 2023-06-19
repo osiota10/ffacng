@@ -45,7 +45,7 @@ COPY --from=backend-stage /app .
 COPY --from=build-stage /app/build ./frontend/build
 
 # Set the working directory to the Django project root
-WORKDIR /.
+WORKDIR /app .
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
@@ -53,7 +53,7 @@ EXPOSE 8000
 # Set environment variables if needed
 
 # Run collectstatic to gather static files
-# RUN python manage.py collectstatic --no-input --clear --link
+RUN python manage.py collectstatic --no-input --clear --link
 
 
 # Start Gunicorn server for Django
