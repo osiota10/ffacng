@@ -53,7 +53,7 @@ EXPOSE 8000
 # Set environment variables if needed
 
 # Run collectstatic to gather static files
-RUN . /opt/venv/bin/activate && python manage.py collectstatic --no-input --clear --link
+RUN manage.py collectstatic --no-input --clear --link
 
 
 # Start Gunicorn server for Django
