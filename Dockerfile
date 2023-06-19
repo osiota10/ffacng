@@ -27,6 +27,8 @@ COPY . ./
 # Create and activate a virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
+
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
