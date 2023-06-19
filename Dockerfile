@@ -17,7 +17,12 @@ RUN npm run build
 
 # Stage 2: Build Django backend
 FROM python:3.10 as backend-stage
+
 WORKDIR /app
+
+# Install GCC compiler
+RUN apt-get update && apt-get install -y gcc
+
 
 # Copy the Django backend files
 COPY requirements.txt ./
