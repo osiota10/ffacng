@@ -53,8 +53,6 @@ WORKDIR /app
 COPY --from=backend-stage /app .
 RUN cd frontend && ls
 
-# Expose necessary ports (e.g., Django runs on 8000 by default)
-EXPOSE 8000
 
 # # Stage 3: Combine React and Django
 # FROM python:3.10
@@ -70,13 +68,11 @@ EXPOSE 8000
 # Set the working directory to the Django project root
 # WORKDIR /app
 
-# Expose necessary ports (e.g., Django runs on 8000 by default)
-# EXPOSE 8000
 
-# Set environment variables if needed
+# # Start Gunicorn server for Django
+# CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
 
-# Run collectstatic to gather static files
-# RUN python manage.py collectstatic --no-input --clear --link
 
-# Start Gunicorn server for Django
-CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
+# Expose port 8000 and start the server
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
