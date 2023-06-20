@@ -26,10 +26,10 @@ RUN apt-get update && apt-get install -y gcc
 COPY requirements.txt ./
 COPY manage.py ./
 
-# Create and activate a virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
+# # Create and activate a virtual environment
+# RUN python -m venv /opt/venv
+# ENV PATH="/opt/venv/bin:$PATH"
+# SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
@@ -60,4 +60,4 @@ EXPOSE 8000
 # RUN /opt/venv/bin/python manage.py collectstatic --no-input --clear --link
 
 # Start Gunicorn server for Django
-CMD ["/opt/venv/bin/gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
+CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
