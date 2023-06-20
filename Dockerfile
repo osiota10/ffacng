@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y gcc
 
 # Copy the Django backend files
 COPY requirements.txt ./
-COPY manage.py ./
+
 
 # # Create and activate a virtual environment
 # RUN python -m venv /opt/venv
@@ -34,8 +34,11 @@ COPY manage.py ./
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+COPY manage.py ./
+
 # Copy built React app from the build stage
 COPY --from=build-stage /app/build ./frontend/build
+
 # Copy the rest of the Django project
 COPY . .
 
