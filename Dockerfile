@@ -27,12 +27,19 @@ RUN pip install gunicorn
 COPY requirements.txt ./
 
 
-# # Create and activate a virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
+# # # Create and activate a virtual environment
+# RUN python -m venv /opt/venv
+# ENV PATH="/opt/venv/bin:$PATH"
+# SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
 
-# ENV PATH="/app/.venv/bin:$PATH"
+# # ENV PATH="/app/.venv/bin:$PATH"
+
+# Create a virtual environment
+RUN python -m venv /app/.venv
+
+# Activate the virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
+
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
