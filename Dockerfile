@@ -34,7 +34,7 @@ COPY requirements.txt ./
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY manage.py ./
+# COPY manage.py ./
 
 # Copy built React app from the build stage
 COPY --from=build-stage /app/build ./frontend/build
