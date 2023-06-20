@@ -85,4 +85,4 @@ RUN ls
 
 # Expose port 8000 and start the server
 EXPOSE 8000
-CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
+CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:$PORT", "--log-file", "-"]
