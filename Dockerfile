@@ -58,7 +58,7 @@ COPY --from=build-stage /app/build ./frontend/build
 # Stage 3: Final image
 # FROM python:3.10
 # Use Nixpacks v1.9.0
-FROM nixos/nix:2.3.15
+FROM nixos/nix:2.3.14
 
 # Install Python 3.10 and GCC
 RUN nix-env -iA nixpkgs.python310 nixpkgs.gcc
