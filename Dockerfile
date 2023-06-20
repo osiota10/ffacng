@@ -34,8 +34,24 @@ COPY manage.py ./
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY . .
+# Copy built React app from the build stage
 COPY --from=build-stage /app/build ./frontend/build
+# Copy the rest of the Django project
+COPY . .
+
+# Run collectstatic to gather static files
+RUN python manage.py collectstatic --no-input --clear --link
+
+
+# Stage 3: Final image
+FROM python:3.10
+WORKDIR /app
+
+# Copy Django backend from the backend stage
+COPY --from=backend-stage /app .
+
+# Expose necessary ports (e.g., Django runs on 8000 by default)
+EXPOSE 8000
 
 # # Stage 3: Combine React and Django
 # FROM python:3.10
@@ -52,12 +68,12 @@ COPY --from=build-stage /app/build ./frontend/build
 # WORKDIR /app
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
-EXPOSE 8000
+# EXPOSE 8000
 
 # Set environment variables if needed
 
 # Run collectstatic to gather static files
-RUN python manage.py collectstatic --no-input --clear --link
+# RUN python manage.py collectstatic --no-input --clear --link
 
 # Start Gunicorn server for Django
 CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
