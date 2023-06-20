@@ -21,6 +21,7 @@ WORKDIR /app
 
 # Install GCC compiler
 RUN apt-get update && apt-get install -y gcc
+RUN pip install gunicorn
 
 # Copy the Django backend files
 COPY requirements.txt ./
