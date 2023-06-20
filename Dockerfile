@@ -19,6 +19,12 @@ RUN npm run build
 FROM python:3.10 as backend-stage
 WORKDIR /app
 
+# Create a virtual environment
+RUN python -m venv /app/.venv
+
+# Activate the virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
+
 # Install GCC compiler
 RUN apt-get update && apt-get install -y gcc
 RUN pip install gunicorn
@@ -33,12 +39,6 @@ COPY requirements.txt ./
 # SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
 
 # # ENV PATH="/app/.venv/bin:$PATH"
-
-# Create a virtual environment
-RUN python -m venv /app/.venv
-
-# Activate the virtual environment
-ENV PATH="/app/.venv/bin:$PATH"
 
 
 # Install Python dependencies
