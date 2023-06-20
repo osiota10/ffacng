@@ -56,7 +56,13 @@ COPY --from=build-stage /app/build ./frontend/build
 
 
 # Stage 3: Final image
-FROM python:3.10
+# FROM python:3.10
+# Use Nixpacks v1.9.0
+FROM nixos/nix:2.3.15
+
+# Install Python 3.10 and GCC
+RUN nix-env -iA nixpkgs.python310 nixpkgs.gcc
+
 WORKDIR /app
 
 # Copy Django backend from the backend stage
@@ -80,9 +86,11 @@ RUN ls
 
 
 # # Start Gunicorn server for Django
-# CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
+CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:8000", "--log-file", "-"]
 
 
 # Expose port 8000 and start the server
-EXPOSE 8000
+# EXPOSE 8000
 # CMD ["gunicorn", "backend.wsgi", "--bind", "0.0.0.0:$PORT", "--log-file", "-"]
+
+
