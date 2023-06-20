@@ -31,6 +31,8 @@ COPY requirements.txt ./
 # ENV PATH="/opt/venv/bin:$PATH"
 # SHELL ["/bin/bash", "-c", "source /opt/venv/bin/activate"]
 
+ENV PATH="/app/.venv/bin:$PATH"
+
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
