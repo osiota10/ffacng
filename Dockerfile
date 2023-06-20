@@ -35,15 +35,14 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # COPY manage.py ./
+# Copy the rest of the Django project
+COPY . .
 
 # Copy built React app from the build stage
 COPY --from=build-stage /app/build ./frontend/build
 
-# Copy the rest of the Django project
-COPY . .
-
 # Run collectstatic to gather static files
-RUN python manage.py collectstatic --no-input --clear --link
+# RUN python manage.py collectstatic --no-input --clear --link
 
 
 # Stage 3: Final image
@@ -52,6 +51,7 @@ WORKDIR /app
 
 # Copy Django backend from the backend stage
 COPY --from=backend-stage /app .
+RUN ls /app
 
 # Expose necessary ports (e.g., Django runs on 8000 by default)
 EXPOSE 8000
