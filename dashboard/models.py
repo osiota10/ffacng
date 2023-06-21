@@ -259,3 +259,13 @@ class ActiveUser(models.Model):
             self.recommended_by = self.user.recommended_by
             self.is_superuser = self.user.is_superuser
         super().save(*args, **kwargs)
+
+
+class LevelInformation(models.Model):
+    level = models.IntegerField()
+    expected_downlines = models.IntegerField()
+    expected_match_bonus = models.IntegerField()
+    additional_reward = models.CharField(max_length=225)
+
+    def __str__(self):
+        return str(f"Level {self.level}")

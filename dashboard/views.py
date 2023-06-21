@@ -168,7 +168,17 @@ class UserNotificationView(APIView):
         return Response({'detail': 'Notification marked as read.'})
 
 
+class LevelInformationView(APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, *args, **kwargs):
+        level_information = LevelInformation.objects.all()
+        serializer = LevelInformationSerializer(level_information, many=True)
+        return Response(serializer.data)
+
 # Match Bonus Crediting
+
+
 def credit_users(user_email, user_downline_by_depth, expected_users_by_depth, amounts_to_credit):
     credited_users = []
 

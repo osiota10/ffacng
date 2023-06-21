@@ -10,4 +10,5 @@ urlpatterns = [
     path('withdrawals', WithdrawalView.as_view()),
     path('user-account-info', UserAccountInfoView.as_view()),
     path('user-notifications', UserNotificationView.as_view()),
+    path('level-information', LevelInformationView.as_view()),
 ]

@@ -154,6 +154,7 @@ admin.site.register(MatchBonus, MatchBonusAdmin)
 admin.site.register(ReferralBonus, ReferralBonusAdmin)
 admin.site.register(UserNotification, UserNotificationAdmin)
 admin.site.register(ActiveUser, ActiveUsersAdmin)
+admin.site.register(LevelInformation)
 
 
 admin.site.site_header = 'FFCNG ADMIN'

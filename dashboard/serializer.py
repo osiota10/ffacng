@@ -69,3 +69,9 @@ class UserNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserNotification
         fields = '__all__'
+
+
+class LevelInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LevelInformation
+        fields = '__all__'
