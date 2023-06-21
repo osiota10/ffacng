@@ -6,11 +6,11 @@ import CopyToClipboardButton from "./components/clipCopy";
 function Items({ currentItems }) {
     return (
         <section>
-            <h4 class="text-center mt-8">Your Referrals</h4>
+            <h4 className="text-center mt-8 mb-2">Your Referrals</h4>
 
-            <section class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
+            <section className="table-responsive">
+                <table className="table table-striped table-hover">
+                    <thead className="table-primary">
                         <tr>
                             <th scope="col">Date Joined</th>
                             <th scope="col">Name</th>
@@ -111,31 +111,31 @@ const Referrals = () => {
 
     return (
         <>
-            <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-                <div class="col">
-                    <div class="card">
+            <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+                <div className="col">
+                    <div className="card">
                         <section className="text-center">
                             <CopyToClipboardButton text={userInfo.code} />
                         </section>
-                        <div class="card-body text-center">
-                            <p class="card-text">Referral ID</p>
-                            <h5 class="card-title">{userInfo.code}</h5>
+                        <div className="card-body text-center">
+                            <p className="card-text">Referral ID</p>
+                            <h5 className="card-title">{userInfo.code}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <p class="card-text">Total Referrals</p>
-                            <h5 class="card-title">{totalReferrals}</h5>
+                <div className="col">
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <p className="card-text">Total Referrals</p>
+                            <h5 className="card-title">{totalReferrals}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <p class="card-text">Referrals Earnings</p>
-                            <h5 class="card-title">{`N${userAccountInfo.referral_bonus_earned}`}</h5>
+                <div className="col">
+                    <div className="card">
+                        <div className="card-body text-center">
+                            <p className="card-text">Referrals Earnings</p>
+                            <h5 className="card-title">{`N${userAccountInfo.referral_bonus_earned}`}</h5>
                         </div>
                     </div>
                 </div>
