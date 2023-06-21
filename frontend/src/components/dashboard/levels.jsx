@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { DownlineListContext, UserAccountInfoContext, UserInfoContext } from "./navBar";
+import { DownlineListContext, UserAccountInfoContext } from "./navBar";
 import axios from "axios";
 
 const Levels = () => {
