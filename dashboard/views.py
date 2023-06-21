@@ -36,15 +36,28 @@ def process_mlm_system():
         return
 
 
-class PaymentView(generics.ListCreateAPIView):
-    serializer_class = PaymentSerializer
+class PaymentView(APIView):
     permission_classes = [IsAuthenticated,]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def get(self, request, *args, **kwargs):
+        payment_info = Payment.objects.filter(user=self.request.user)
+        serializer = PaymentSerializer(payment_info, many=True)
+        return Response(serializer.data)
 
-    def get_queryset(self):
-        return Payment.objects.filter(user=self.request.user)
+    def put(self, request, *args, **kwargs):
+        payment_proof = request.FILES.get('payment_proof')
+        if payment_proof:
+            payment = Payment.objects.get(user=self.request.user)
+            payment.payment_proof = payment_proof
+            payment.save()
+            return Response({'message': 'Payment proof updated successfully'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Payment proof not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        # notification_id = request.data.get('notificationId')
+        # notification = UserNotification.objects.get(id=notification_id)
+        # notification.is_read = True
+        # notification.save()
+        # return Response({'detail': 'Notification marked as read.'})
 
 
 class PaymentViewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):

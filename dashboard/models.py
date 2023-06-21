@@ -142,9 +142,7 @@ class Payment(models.Model):
     status = models.CharField(max_length=10, choices=STATUS, default='Pending')
     payment_proof = CloudinaryField('image', blank=True, null=True)
     is_reg_bonus_credited = models.BooleanField(default=False)
-
-    def get_image_url(self):
-        return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.payment_proof}")
+    payment_proof_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - N{self.amount} - {self.status}"
@@ -153,7 +151,14 @@ class Payment(models.Model):
         if self.pin == "":
             pin = generate_payment_pin()
             self.pin = pin
+
+        if self.payment_proof and self.payment_proof_url == "":
+            url = f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.payment_proof}"
+            self.payment_proof_url = self.get_image_url()
         super().save(*args, **kwargs)
+
+    def get_image_url(self):
+        return (f"https://res.cloudinary.com/dkcjpdk1c/image/upload/{self.payment_proof}")
 
 
 class Withdrawal(models.Model):
