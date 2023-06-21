@@ -1,17 +1,16 @@
 import { useState, useContext } from "react";
 import { WithdrawalListContext, UserAccountInfoContext } from "./navBar";
 import axios from "axios";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import ReactPaginate from "react-paginate";
+import SuccessModal from "./components/successModalMsg";
 
 function Items({ currentItems }) {
     return (
         <section className="row">
-            <h4 className="text-center mt-5">Your Withdrawal History</h4>
+            <h4 className="text-center mt-5 mb-2">Your Withdrawal History</h4>
             <section className="table-responsive">
                 <table className="table table-striped table-hover">
-                    <thead>
+                    <thead className="table-primary">
                         <tr>
                             <th scope="col">Date Requested</th>
                             <th scope="col">Amount</th>
@@ -111,11 +110,17 @@ const Withdrawals = () => {
     const withdrawalListReversed = withdrawalList.reverse();
 
     const [withDrawalStatusData, setWithdralStatusData] = useState([]);
-    console.log(userAccountInfo)
+    const [withdrawalError, setWithdrawalError] = useState([])
+
     // Form Success
     const [showAddSuccess, setAddSuccessShow] = useState(false);
     const handleAddSuccessClose = () => setAddSuccessShow(false);
     const handleAddSuccessShow = () => setAddSuccessShow(true);
+
+    // Error Success
+    const [showError, setShowError] = useState(false);
+    const handleErrorSuccessClose = () => setShowError(false);
+    const handleErrorSuccessShow = () => setShowError(true);
 
     // Form
     const [loading, setLoading] = useState(false);
@@ -155,7 +160,8 @@ const Withdrawals = () => {
                     }
 
                 } catch (err) {
-                    alert(err.response.data.error);
+                    setWithdrawalError(err.response.data.error);
+                    handleErrorSuccessShow()
                     setLoading(false)
                     setFormAddData({
                         amount: '',
@@ -170,48 +176,48 @@ const Withdrawals = () => {
     };
 
     return (
-        <>
-            <div class="row row-cols-1 row-cols-lg-4 g-4 mt-3">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <p class="card-text">Total Withdrawal Request</p>
-                            <h5 class="card-title">{totalWithdrawalRequest}</h5>
+        <section className="container">
+            <div className="row row-cols-1 row-cols-lg-4 g-4 mt-3">
+                <div className="col">
+                    <div className="card">
+                        <div className="card-body text-center">
+                            <p className="card-text">Total Withdrawal Request</p>
+                            <h5 className="card-title">{totalWithdrawalRequest}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <p class="card-text">Pending Withdrawals</p>
-                            <h5 class="card-title">{totalPendingRequest}</h5>
+                <div className="col">
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <p className="card-text">Pending Withdrawals</p>
+                            <h5 className="card-title">{totalPendingRequest}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <p class="card-text">Approved Withdrawals</p>
-                            <h5 class="card-title">{totalApprovedRequest}</h5>
+                <div className="col">
+                    <div className="card">
+                        <div className="card-body text-center">
+                            <p className="card-text">Approved Withdrawals</p>
+                            <h5 className="card-title">{totalApprovedRequest}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <p class="card-text">Available Withdrawal</p>
-                            <h5 class="card-title">{`N${userAccountInfo.total_balance}`}</h5>
+                <div className="col">
+                    <div className="card">
+                        <div className="card-body text-center">
+                            <p className="card-text">Available Withdrawal</p>
+                            <h5 className="card-title">{`N${userAccountInfo.total_balance}`}</h5>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <section class="row mt-3">
-                <div class="col-lg-7 mx-auto">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="text-center">Withdrawal Request</h5>
-                            <p class="text-center">Enter Amount and wait for Approval</p>
+            <section className="row mt-3">
+                <div className="col-lg-7 mx-auto">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="text-center">Withdrawal Request</h5>
+                            <p className="text-center">Enter Amount and wait for Approval</p>
                             <form onSubmit={e => onAddSubmit(e)}>
                                 <div class="mb-3">
                                     <label for="formGroupExampleInput2" class="form-label">Amount</label>
@@ -258,27 +264,35 @@ const Withdrawals = () => {
             }
 
             {/* Success Message */}
-            <Modal
-                show={showAddSuccess}
-                onHide={handleAddSuccessClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Withdrawal Submitted</Modal.Title>
-                </Modal.Header>
 
-                <Modal.Body>
-                    Your withdrawal request of <span className="text-primary fw-bold">{`N${withDrawalStatusData.amount}`}</span> has been successfully submitted and is now pending approval
-                </Modal.Body>
+            {/* Withdrawal Success Message */}
+            {
+                showAddSuccess
+                    ?
+                    <SuccessModal
+                        title='Withdrawal Submitted'
+                        message='Your withdrawal request has been successfully submitted and is now pending approval'
+                        show={showAddSuccess}
+                        onClose={handleAddSuccessClose}
+                    />
+                    :
+                    null
+            }
 
-                <Modal.Footer className='d-flex justify-content-center'>
-                    <Button variant="btn btn-danger" onClick={handleAddSuccessClose} >
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
+            {/* Withdrawal Error Message */}
+            {
+                showError
+                    ?
+                    <SuccessModal
+                        title='Error'
+                        message={withdrawalError}
+                        show={showError}
+                        onClose={handleErrorSuccessClose}
+                    />
+                    :
+                    null
+            }
+        </section>
     );
 }
 
