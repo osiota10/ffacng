@@ -1,13 +1,19 @@
 import { useContext, useState } from "react";
-// import { UserInfoContext } from "../../App";
+import { UserInfoContext } from "./navBar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom";
+import LoaderIcon from "../cards/utilities/spinner";
+import SuccessModal from "./components/successModalMsg";
 
 function EditProfile() {
-    // const CurrentUserInfo = useContext(UserInfoContext)
+    const CurrentUserInfo = useContext(UserInfoContext)
+    const [loading, setLoading] = useState(false);
+
+    // Update Profile Pic
+    const [profilePicFile, setProfilePicFile] = useState([]);
+
+    // Update Profile Pic input
+    const onProfilePicChange = e => setProfilePicFile(e.target.files[0]);
+    console.log(profilePicFile)
 
     //Modal
     const [show, setShow] = useState(false);
@@ -15,28 +21,28 @@ function EditProfile() {
     const handleShow = () => setShow(true);
 
     const [formData, setFormData] = useState({
-        // first_name: CurrentUserInfo.first_name,
-        // last_name: CurrentUserInfo.last_name,
-        // email: CurrentUserInfo.email,
-        // phone_number: CurrentUserInfo.phone_number,
-        // date_of_birth: CurrentUserInfo.date_of_birth,
-        // height: CurrentUserInfo.height,
-        // weight: CurrentUserInfo.weight,
-        // gender: CurrentUserInfo.gender,
-        // sport: CurrentUserInfo.sport,
-        // home_address: CurrentUserInfo.home_address,
-        // local_govt: CurrentUserInfo.local_govt,
-        // state_of_origin: CurrentUserInfo.state_of_origin,
-        // nationality: CurrentUserInfo.nationality,
-        // image: CurrentUserInfo.image,
-        // get_photo_url: CurrentUserInfo.get_photo_url
+        first_name: CurrentUserInfo.first_name,
+        last_name: CurrentUserInfo.last_name,
+        email: CurrentUserInfo.email,
+        phone_number: CurrentUserInfo.phone_number,
+        date_of_birth: CurrentUserInfo.date_of_birth,
+        gender: CurrentUserInfo.gender,
+        home_address: CurrentUserInfo.home_address,
+        local_govt: CurrentUserInfo.local_govt,
+        state_of_origin: CurrentUserInfo.state_of_origin,
+        nationality: CurrentUserInfo.nationality,
+        image: CurrentUserInfo.image,
+        get_photo_url: CurrentUserInfo.get_photo_url,
+        bank_name: CurrentUserInfo.bank_name,
+        account_name: CurrentUserInfo.account_name,
+        account_number: CurrentUserInfo.account_number,
+
     });
 
-    const { first_name, last_name, email, phone_number, date_of_birth, height, weight, gender, sport, home_address, local_govt, state_of_origin, nationality, image, get_photo_url } = formData;
+    const { first_name, last_name, phone_number, date_of_birth, gender, home_address, local_govt, state_of_origin, nationality, get_photo_url, bank_name, account_name, account_number } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const navigate = useNavigate();
 
     const onSubmit = e => {
         e.preventDefault();
@@ -46,20 +52,37 @@ function EditProfile() {
             if (localStorage.getItem('access')) {
                 const config = {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
                         'Authorization': `JWT ${localStorage.getItem('access')}`,
                         'Accept': 'application/json'
                     }
                 };
 
-                const body = JSON.stringify({ first_name, last_name, email, phone_number });
+                // const body = JSON.stringify({  , , , , get_photo_url, , ,  });
+
+                const formData = new FormData();
+                formData.append('first_name', first_name);
+                formData.append('last_name', last_name);
+                formData.append('phone_number', phone_number);
+                formData.append('date_of_birth', date_of_birth);
+                formData.append('home_address', home_address);
+                formData.append('local_govt', local_govt);
+                formData.append('state_of_origin', state_of_origin);
+                formData.append('nationality', nationality);
+                formData.append('bank_name', bank_name);
+                formData.append('account_name', account_name);
+                formData.append('account_number', account_number);
+                formData.append('image', profilePicFile);
 
                 try {
-                    const res = await axios.put(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+                    setLoading(true)
+                    const res = await axios.put(`${process.env.REACT_APP_API_URL}/auth/users/me/`, formData, config);
                     if (res.status === 200) {
+                        setLoading(false)
                         handleShow()
                     }
                 } catch (err) {
+                    setLoading(false)
                     console.error("User not authenticated");
                 }
             } else {
@@ -68,15 +91,11 @@ function EditProfile() {
         }
 
         fetchData()
-
-        // setTimeout(() => {
-        //     navigate('/dashboard')
-        // }, 2000)
     };
-    console.log(image)
+
     return (
         <div class="container mt-3 pb-5">
-            {/* <h2 class="text-center">Edit my Profile</h2> */}
+            <h2 class="text-center">Edit Profile</h2>
             <div>
                 <form class="row" onSubmit={e => onSubmit(e)}>
                     <div class="col-lg-9 mx-auto">
@@ -85,24 +104,26 @@ function EditProfile() {
                                 <h5 className="text-center">Profile Picture</h5>
                             </section>
                             <section>
-                                <img src='' class="d-flex justify-content-center align-items-center rounded-circle mx-auto" width="200" height="200" alt="..." />
+                                <img src={get_photo_url} class="d-flex justify-content-center align-items-center rounded-circle mx-auto" width="200" height="200" alt="..." />
 
                             </section>
                             <div class="col-12 input-group mb-3">
                                 <input
                                     type="file"
                                     class="form-control"
-                                    id="inputGroupFile02"
+                                    id="image"
                                     name="image"
-                                    value={image}
-                                    onChange={e => onChange(e)}
+                                    // value={formData.image}
+                                    onChange={e => onProfilePicChange(e)}
                                     required
                                 />
                                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
                             </div>
+
                             <section className="col-12 mt-5">
                                 <h5 className="text-center">Personal Information</h5>
                             </section>
+
                             <div class="col-md-6">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input
@@ -134,7 +155,7 @@ function EditProfile() {
                                     id="email"
                                     aria-describedby="emailHelp"
                                     name="email"
-                                    value={email}
+                                    value={formData.email}
                                     disabled
                                     required
                                 />
@@ -167,6 +188,7 @@ function EditProfile() {
                                 <label for="date_of_birth" class="form-label">Date of Birth</label>
                                 <input
                                     type="text"
+                                    // pattern="\d{4}-\d{2}-\d{2}"
                                     class="form-control inputfield"
                                     id="date_of_birth"
                                     name="date_of_birth"
@@ -174,44 +196,50 @@ function EditProfile() {
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
+
+                            <section className="col-12 mt-5">
+                                <h5 className="text-center">Bank Information</h5>
+                            </section>
+
                             <div class="col-md-6">
-                                <label for="sport" class="form-label">Sport</label>
+                                <label for="bank_name" class="form-label">Bank Name</label>
                                 <input
                                     type="text"
                                     class="form-control inputfield"
-                                    id="sport"
-                                    name="sport"
-                                    value={sport}
+                                    id="bank_name"
+                                    name="bank_name"
+                                    value={bank_name}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
                             <div class="col-md-6">
-                                <label for="height" class="form-label">Height(m)</label>
+                                <label for="account_name" class="form-label">Account Name</label>
                                 <input
                                     type="text"
                                     class="form-control inputfield"
-                                    id="height"
-                                    name="height"
-                                    value={height}
+                                    id="account_name"
+                                    name="account_name"
+                                    value={account_name}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
                             <div class="col-md-6">
-                                <label for="weight" class="form-label">Weight(kg)</label>
+                                <label for="account_number" class="form-label">Account Number</label>
                                 <input
                                     type="text"
                                     class="form-control inputfield"
-                                    id="weight"
-                                    name="weight"
-                                    value={weight}
+                                    id="account_number"
+                                    name="account_number"
+                                    value={account_number}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
+
                             <section className="col-12 mt-5">
                                 <h5 className="text-center">Contact Address</h5>
                             </section>
                             <div class="col-12">
-                                <label for="home_address" class="form-label">Home Address</label>
+                                <label for="home_address" class="form-label">Residential Address</label>
                                 <textarea
                                     class="form-control"
                                     id="home_address"
@@ -244,6 +272,7 @@ function EditProfile() {
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
+
                             <div class="col-md-6">
                                 <label for="nationality" class="form-label">Nationality</label>
                                 <input
@@ -257,32 +286,36 @@ function EditProfile() {
                             </div>
                         </section>
 
-                        <div class="col-12 mt-5">
-                            <button type="submit" class="btn btn-primary form-control">Update Profile</button>
-                        </div>
+                        <section className="d-grid mt-4">
+                            <button
+                                type="submit"
+                                className={loading ? 'btn btn-primary disabled' : 'btn btn-primary'}
+                            >
+                                {loading
+                                    ?
+                                    <LoaderIcon />
+                                    :
+                                    null
+                                }
+                                Update Profile
+                            </button>
+                        </section>
                     </div>
                 </form>
             </div>
 
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Profile Updated</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    You have successfully updated your Profile
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="btn btn-outline-primary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Link className="btn btn-primary" to="/dashboard">Dashboard</Link>
-                </Modal.Footer>
-            </Modal>
+            {
+                show
+                    ?
+                    <SuccessModal
+                        title='Profile Updated'
+                        message='You have successfully updated your Profile'
+                        show={show}
+                        onClose={handleClose}
+                    />
+                    :
+                    null
+            }
         </div>
     );
 }

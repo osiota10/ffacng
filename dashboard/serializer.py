@@ -28,6 +28,41 @@ class UserInfoSerializer(UserSerializer):
             return f'{obj.recommended_by.first_name} {obj.recommended_by.last_name} - {obj.recommended_by.email}'
         return None
 
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+
+        # Perform custom update logic here
+        instance.first_name = validated_data.get(
+            'first_name', instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name', instance.last_name)
+        instance.phone_number = validated_data.get(
+            'phone_number', instance.phone_number)
+        instance.date_of_birth = validated_data.get(
+            'date_of_birth', instance.date_of_birth)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.bank_name = validated_data.get(
+            'bank_name', instance.bank_name)
+        instance.account_name = validated_data.get(
+            'account_name', instance.account_name)
+        instance.account_number = validated_data.get(
+            'account_number', instance.account_number)
+        instance.nationality = validated_data.get(
+            'nationality', instance.nationality)
+        instance.state_of_origin = validated_data.get(
+            'state_of_origin', instance.state_of_origin)
+        instance.local_govt = validated_data.get(
+            'local_govt', instance.local_govt)
+        instance.home_address = validated_data.get(
+            'home_address', instance.home_address)
+
+        # Update image field
+        if 'image' in validated_data:
+            instance.image = validated_data['image']
+
+        instance.save()
+        return instance
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:

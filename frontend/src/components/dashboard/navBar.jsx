@@ -308,7 +308,7 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                                     </section>
 
                                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-                                                        <li><a className="dropdown-item" href="#">Edit Profile</a></li>
+                                                        <li><Link to='/dashboard/edit-profile' className="dropdown-item">Edit Profile</Link></li>
                                                         <li><a className="dropdown-item" href="#" onClick={logout_user}>Sign Out</a></li>
                                                     </ul>
                                                 </div>

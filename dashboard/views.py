@@ -12,6 +12,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
+from djoser.views import UserViewSet
+from djoser import signals
 
 
 def process_mlm_system():
@@ -60,13 +62,16 @@ class PaymentView(APIView):
         # return Response({'detail': 'Notification marked as read.'})
 
 
-class PaymentViewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated,]
-    lookup_field = "id"
+class UserUpdateView(UserViewSet):
+    # Use your custom serializer for updating user information
+    serializer_class = UserInfoSerializer
 
-    def get_queryset(self):
-        return Payment.objects.filter(user=self.request.user)
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+
+        # Perform additional actions after updating user information if needed
+
+        return response
 
 
 class RefCodeCheckView(generics.RetrieveAPIView):
