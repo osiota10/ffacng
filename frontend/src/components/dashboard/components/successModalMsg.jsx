@@ -1,8 +1,9 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 
-const SuccessModal = ({ title, message, show, onClose }) => {
+const SuccessModal = ({ title, message, show, onClose, errorMessage }) => {
     return (
         <Modal
             show={show}
@@ -15,7 +16,24 @@ const SuccessModal = ({ title, message, show, onClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                {message}
+                {errorMessage ? null
+                    :
+                    <p className='text-center'>{message}</p>
+                }
+
+                {
+                    errorMessage
+                        ?
+                        <section>
+                            {Object.entries(errorMessage).map(([key, value]) => (
+                                <Alert variant='danger' key={key}>
+                                    <span className='fw-bolder'>{key}:</span> {value}
+                                </Alert>
+                            ))}
+                        </section>
+                        :
+                        null
+                }
             </Modal.Body>
 
             <Modal.Footer className='d-flex justify-content-center'>

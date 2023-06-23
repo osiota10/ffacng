@@ -13,7 +13,6 @@ function EditProfile() {
 
     // Update Profile Pic input
     const onProfilePicChange = e => setProfilePicFile(e.target.files[0]);
-    console.log(profilePicFile)
 
     //Modal
     const [show, setShow] = useState(false);
@@ -39,10 +38,24 @@ function EditProfile() {
 
     });
 
-    const { first_name, last_name, phone_number, date_of_birth, gender, home_address, local_govt, state_of_origin, nationality, get_photo_url, bank_name, account_name, account_number } = formData;
+    const { first_name, last_name, phone_number, date_of_birth, home_address, local_govt, state_of_origin, nationality, get_photo_url, bank_name, account_name, account_number } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    // Select Input
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+
+    //Form Error Message
+    const [errorMessage, setErrorMessage] = useState([])
+
+    //Modal Error
+    const [errorshow, setErrorShow] = useState(false);
+    const handleErrorClose = () => setErrorShow(false);
+    const handleErrorShow = () => setErrorShow(true);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -58,8 +71,6 @@ function EditProfile() {
                     }
                 };
 
-                // const body = JSON.stringify({  , , , , get_photo_url, , ,  });
-
                 const formData = new FormData();
                 formData.append('first_name', first_name);
                 formData.append('last_name', last_name);
@@ -73,6 +84,7 @@ function EditProfile() {
                 formData.append('account_name', account_name);
                 formData.append('account_number', account_number);
                 formData.append('image', profilePicFile);
+                formData.append('gender', selectedOption);
 
                 try {
                     setLoading(true)
@@ -83,7 +95,8 @@ function EditProfile() {
                     }
                 } catch (err) {
                     setLoading(false)
-                    console.error("User not authenticated");
+                    setErrorMessage(err.response.data);
+                    handleErrorShow()
                 }
             } else {
                 console.error("User not authenticated");
@@ -94,52 +107,51 @@ function EditProfile() {
     };
 
     return (
-        <div class="container mt-3 pb-5">
-            <h2 class="text-center">Edit Profile</h2>
+        <div className="container mt-3 pb-5">
+            <h2 className="text-center">Edit Profile</h2>
             <div>
-                <form class="row" onSubmit={e => onSubmit(e)}>
-                    <div class="col-lg-9 mx-auto">
+                <form className="row" onSubmit={e => onSubmit(e)}>
+                    <div className="col-lg-9 mx-auto">
                         <section className="row g-3">
                             <section className="col-12 mt-5">
                                 <h5 className="text-center">Profile Picture</h5>
                             </section>
                             <section>
-                                <img src={get_photo_url} class="d-flex justify-content-center align-items-center rounded-circle mx-auto" width="200" height="200" alt="..." />
+                                <img src={get_photo_url} className="d-flex justify-content-center align-items-center rounded-circle mx-auto" width="200" height="200" alt="..." />
 
                             </section>
-                            <div class="col-12 input-group mb-3">
+                            <div className="col-12 input-group mb-3">
                                 <input
                                     type="file"
-                                    class="form-control"
+                                    className="form-control"
                                     id="image"
                                     name="image"
                                     // value={formData.image}
                                     onChange={e => onProfilePicChange(e)}
-                                    required
                                 />
-                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                                <label className="input-group-text" for="inputGroupFile02">Upload</label>
                             </div>
 
                             <section className="col-12 mt-5">
                                 <h5 className="text-center">Personal Information</h5>
                             </section>
 
-                            <div class="col-md-6">
-                                <label for="first_name" class="form-label">First Name</label>
+                            <div className="col-md-6">
+                                <label for="first_name" className="form-label">First Name</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="first_name"
                                     name="first_name"
                                     value={first_name}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
-                            <div class="col-md-6">
-                                <label for="last_name" class="form-label">Last Name</label>
+                            <div className="col-md-6">
+                                <label for="last_name" className="form-label">Last Name</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="last_name"
                                     name="last_name"
                                     value={last_name}
@@ -147,11 +159,11 @@ function EditProfile() {
                                     required
                                 />
                             </div>
-                            <div class="col-md-6">
+                            <div className="col-md-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input
                                     type="email"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="email"
                                     aria-describedby="emailHelp"
                                     name="email"
@@ -160,11 +172,11 @@ function EditProfile() {
                                     required
                                 />
                             </div>
-                            <div class="col-md-6">
-                                <label for="phone_number" class="form-label">Phone Number</label>
+                            <div className="col-md-6">
+                                <label for="phone_number" className="form-label">Phone Number</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="phone_number"
                                     aria-describedby="emailHelp"
                                     name="phone_number"
@@ -173,23 +185,21 @@ function EditProfile() {
                                     required
                                 />
                             </div>
-                            <div class="col-md-6">
-                                <label for="gender" class="form-label">Gender</label>
-                                <input
-                                    type="text"
-                                    class="form-control inputfield"
-                                    id="gender"
-                                    name="gender"
-                                    value={gender}
-                                    onChange={e => onChange(e)}
-                                    required />
+
+                            <div className="col-md-6">
+                                <label for="gender-select" className="form-label">Gender</label>
+                                <select id="gender-select" className="form-select inputfield" aria-label="Default select example" value={selectedOption === '' ? formData.gender : selectedOption} onChange={handleOptionChange}>
+                                    <option selected>-- Select --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                            <div className="col-md-6">
+                                <label for="date_of_birth" className="form-label">Date of Birth <small className="text-primary fw-bold">(YYYY-MM-DD)</small></label>
                                 <input
                                     type="text"
                                     // pattern="\d{4}-\d{2}-\d{2}"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="date_of_birth"
                                     name="date_of_birth"
                                     value={date_of_birth}
@@ -201,33 +211,33 @@ function EditProfile() {
                                 <h5 className="text-center">Bank Information</h5>
                             </section>
 
-                            <div class="col-md-6">
+                            <div className="col-md-6">
                                 <label for="bank_name" class="form-label">Bank Name</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="bank_name"
                                     name="bank_name"
                                     value={bank_name}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
-                            <div class="col-md-6">
+                            <div className="col-md-6">
                                 <label for="account_name" class="form-label">Account Name</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="account_name"
                                     name="account_name"
                                     value={account_name}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
-                            <div class="col-md-6">
-                                <label for="account_number" class="form-label">Account Number</label>
+                            <div className="col-md-6">
+                                <label for="account_number" className="form-label">Account Number</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="account_number"
                                     name="account_number"
                                     value={account_number}
@@ -238,10 +248,10 @@ function EditProfile() {
                             <section className="col-12 mt-5">
                                 <h5 className="text-center">Contact Address</h5>
                             </section>
-                            <div class="col-12">
-                                <label for="home_address" class="form-label">Residential Address</label>
+                            <div className="col-12">
+                                <label for="home_address" className="form-label">Residential Address</label>
                                 <textarea
-                                    class="form-control"
+                                    className="form-control"
                                     id="home_address"
                                     rows="4"
                                     onChange={e => onChange(e)}
@@ -250,22 +260,22 @@ function EditProfile() {
                                     required
                                 ></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label for="local_govt" class="form-label">Local Government</label>
+                            <div className="col-md-6">
+                                <label for="local_govt" className="form-label">Local Government</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="local_govt"
                                     name="local_govt"
                                     value={local_govt}
                                     onChange={e => onChange(e)}
                                     required />
                             </div>
-                            <div class="col-md-6">
-                                <label for="state_of_origin" class="form-label">State of Origin</label>
+                            <div className="col-md-6">
+                                <label for="state_of_origin" className="form-label">State of Origin</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="state_of_origin"
                                     name="state_of_origin"
                                     value={state_of_origin}
@@ -273,11 +283,11 @@ function EditProfile() {
                                     required />
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="nationality" class="form-label">Nationality</label>
+                            <div className="col-md-6">
+                                <label for="nationality" className="form-label">Nationality</label>
                                 <input
                                     type="text"
-                                    class="form-control inputfield"
+                                    className="form-control inputfield"
                                     id="nationality"
                                     name="nationality"
                                     value={nationality}
@@ -312,6 +322,20 @@ function EditProfile() {
                         message='You have successfully updated your Profile'
                         show={show}
                         onClose={handleClose}
+                    />
+                    :
+                    null
+            }
+
+            {
+                errorshow
+                    ?
+                    <SuccessModal
+                        title='Fix the Error(s) Below!!!'
+                        message='The following error has occured!!!'
+                        show={errorshow}
+                        onClose={handleErrorClose}
+                        errorMessage={errorMessage}
                     />
                     :
                     null
