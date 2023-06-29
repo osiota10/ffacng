@@ -215,9 +215,19 @@ def credit_users_for_mlm_system(mlm_system):
     credited_users = []
 
     for user in mlm_system.users.keys():
-        user_downline_by_depth = mlm_system.count_users_by_depth_for_user(user)
-        expected_users_by_depth = [2, 4, 8, 16, 32, 64]
-        amounts_to_credit = [3000, 5000, 3000, 15000, 5000, 250000]
+        current_user = UserAccount.objects.get(email=user)
+
+        if current_user.plan == "Premium":
+            user_downline_by_depth = mlm_system.count_users_by_depth_for_user(
+                user, 8)
+            expected_users_by_depth = [2, 4, 8, 16, 32, 64, 128, 256]
+            amounts_to_credit = [3000, 5000, 3000,
+                                 20000, 5000, 35000, 7000, 1000000]
+        elif current_user.plan == "Eureka":
+            user_downline_by_depth = mlm_system.count_users_by_depth_for_user(
+                user, 6)
+            expected_users_by_depth = [2, 4, 8, 16, 32, 64]
+            amounts_to_credit = [2000, 5000, 3000, 15000, 5000, 250000]
 
         credited_users.extend(credit_users(
             user, user_downline_by_depth, expected_users_by_depth, amounts_to_credit))
