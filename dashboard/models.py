@@ -49,6 +49,12 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         ('Active', 'Active'),
         ('Inactive', 'Inactive')
     ]
+
+    PLAN = [
+        ('Premium', 'Premium'),
+        ('Eureka', 'Eureka')
+    ]
+
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -71,6 +77,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     account_name = models.CharField(max_length=50, blank=True, null=True)
     account_number = models.CharField(max_length=10, blank=True, null=True)
     code = models.CharField(max_length=12, blank=True)
+    plan = models.CharField(max_length=9, choices=PLAN)
     recommended_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='ref_by')
     refferer_code_used = models.CharField(max_length=12, blank=True)
@@ -79,7 +86,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name',
-                       'phone_number', 'refferer_code_used']
+                       'phone_number', 'refferer_code_used', 'plan']
     ordering = ('email',)
 
     def get_full_name(self):
