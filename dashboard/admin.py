@@ -11,13 +11,13 @@ class CustomUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     ordering = ('email',)
-    list_display = ('email', 'first_name', 'last_name', 'date_joined',
+    list_display = ('email', 'first_name', 'last_name', 'plan', 'date_joined',
                     'is_active', 'is_staff', 'is_superuser', 'recommended_by')
     model = UserAccount
     fieldsets = (
         (None, {'fields': ('image', 'password',)}),
         ('Personal info', {
-            'fields': ('status', 'first_name', 'last_name', 'email', 'gender', 'phone_number', 'date_of_birth', 'code', 'recommended_by', 'refferer_code_used',)}),
+            'fields': ('status', 'first_name', 'last_name', 'email', 'gender', 'phone_number', 'date_of_birth', 'code', 'recommended_by', 'plan', 'refferer_code_used',)}),
         ('Bank Information', {
             'fields': ('bank_name', 'account_name', 'account_number',)}),
         ('Contact Address', {
@@ -31,13 +31,13 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'email', 'refferer_code_used', 'password1', 'password2')}
+            'fields': ('first_name', 'last_name', 'email', 'refferer_code_used', 'plan', 'password1', 'password2')}
          ),
     )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:  # Existing object (editing)
-            return self.readonly_fields + ('status', 'code', 'recommended_by', 'refferer_code_used', 'email')
+            return self.readonly_fields + ('status', 'code', 'recommended_by', 'plan', 'refferer_code_used', 'email')
         else:  # New object (creating)
             return self.readonly_fields
 
