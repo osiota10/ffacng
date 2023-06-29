@@ -145,7 +145,7 @@ class Payment(models.Model):
                                 on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     pin = models.CharField(max_length=5, blank=True)
-    amount = models.IntegerField(default=15500)
+    amount = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS, default='Pending')
     payment_proof = CloudinaryField('image', blank=True, null=True)
     is_reg_bonus_credited = models.BooleanField(default=False)
