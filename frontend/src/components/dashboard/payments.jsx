@@ -1,13 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import CopyToClipboardButton from "./components/clipCopy";
 import LoaderIcon from "../cards/utilities/spinner";
 import SuccessModal from "./components/successModalMsg";
+import { UserInfoContext } from "./navBar";
 
 
 const Payments = () => {
+    const userInfo = useContext(UserInfoContext)
+
     //Fetch Payment Pin info
     const [paymentData, setPaymentData] = useState([]);
     // Loading
@@ -107,7 +110,7 @@ const Payments = () => {
 
     return (
         <section className='container'>
-            <div className="row row-cols-1 row-cols-lg-4 g-4 mt-3">
+            <div className="row row-cols-1 row-cols-lg-3 g-4 mt-3">
                 <div className="col">
                     <div className="card">
                         <div className="card-body text-center">
@@ -121,6 +124,14 @@ const Payments = () => {
                         <div className="card-body">
                             <p className="card-text">Payment Status</p>
                             <h5 className="card-title">{firstItem ? paymentData[0].status : null}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div className="col">
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <p className="card-text">Current Plan</p>
+                            <h5 className="card-title">{userInfo.plan}</h5>
                         </div>
                     </div>
                 </div>
@@ -157,6 +168,10 @@ const Payments = () => {
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Amount:</td>
+                                                <td>{firstItem ? <>N{paymentData[0].amount}</> : null}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>Purpose:</td>
                                                 <td>One-time registration fee</td>
                                             </tr>
@@ -188,7 +203,12 @@ const Payments = () => {
                                                         Upload Payment Proof
                                                     </span>
 
-                                                    <a href={firstItem ? paymentData[0].get_image_url : null} target="_blank" rel="noreferrer"><span className="btn btn-info btn-sm me-2"><i class="fa-solid fa-image me-1"></i>View</span></a>
+                                                    {firstItem && paymentData[0].payment_proof
+                                                        ?
+                                                        <a href={firstItem ? paymentData[0].get_image_url : null} target="_blank" rel="noreferrer"><span className="btn btn-info btn-sm me-2"><i class="fa-solid fa-image me-1"></i>View</span></a>
+                                                        :
+                                                        <span className="btn btn-info btn-sm disabled"><i class="fa-solid fa-image me-1"></i>View</span>
+                                                    }
                                                 </td>
                                             </tr>
                                         </tbody>
