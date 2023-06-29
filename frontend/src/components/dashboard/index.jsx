@@ -77,8 +77,12 @@ function DashboardHome() {
 
                             <header className="text-center mb-1">
                                 <h4 className="card-title">Level {userAccountInfo.depth}</h4>
-                                <span className={userInfo.status === 'Active' ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-danger'}>
+                                <span className={userInfo.status === 'Active' ? 'badge rounded-pill bg-primary me-1' : 'badge rounded-pill bg-danger me-1'}>
                                     {userInfo.status}
+                                </span>
+
+                                <span className={userInfo.plan === 'Premium' ? 'badge rounded-pill bg-secondary' : 'badge rounded-pill bg-info'}>
+                                    {userInfo.plan} Plan
                                 </span>
                             </header>
                             <section class="table-responsive">
