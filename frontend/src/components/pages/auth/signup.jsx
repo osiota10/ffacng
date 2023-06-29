@@ -59,13 +59,22 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
     const { first_name, last_name, phone_number, email, password, re_password } = formData;
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    // Plan Select Input
+    const [selectedPlanOption, setSelectedPlanOption] = useState({ plan: '' });
+    const { plan } = selectedPlanOption
+
+    const handlePlanOptionChange = (event) => {
+        setSelectedPlanOption({ [event.target.name]: event.target.value });
+    };
+    console.log(plan)
+    console.log(first_name)
     const onSubmit = e => {
         e.preventDefault();
         setLoading(true)
 
         async function signupHandler() {
             try {
-                await createaccount(first_name, last_name, phone_number, email, referralCode, password, re_password);
+                await createaccount(first_name, last_name, phone_number, email, referralCode, plan, password, re_password);
                 // handle successful signup
             } catch (error) {
                 // handle signup error
@@ -77,6 +86,9 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
         signupHandler()
 
     };
+
+
+
 
     useEffect(() => {
         // createaccount(first_name, last_name, phone_number, email, password, re_password);
@@ -221,6 +233,22 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
                                                 </small>
                                                 :
                                                 null}
+                                        </div>
+
+                                        <div className="col-md-12 mb-3">
+                                            <label for="plan" className="form-label">Plan</label>
+                                            <select
+                                                id="plan"
+                                                className="form-select inputfield"
+                                                aria-label="Default select example"
+                                                name="plan"
+                                                value={plan}
+                                                onChange={handlePlanOptionChange}
+                                            >
+                                                <option selected>-- Select --</option>
+                                                <option value="Eureka">Eureka - N15,500</option>
+                                                <option value="Premium">Premium - N15,000</option>
+                                            </select>
                                         </div>
 
                                         <div class="col-md-12 mb-3">

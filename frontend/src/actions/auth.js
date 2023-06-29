@@ -176,15 +176,15 @@ export const login = (email, password) => async dispatch => {
     }
 };
 
-export const createaccount = (first_name, last_name, phone_number, email, refferer_code_used, password, re_password) => async dispatch => {
+export const createaccount = (first_name, last_name, phone_number, email, refferer_code_used, plan, password, re_password) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
 
-    const body = JSON.stringify({ first_name, last_name, phone_number, email, refferer_code_used, password, re_password });
-
+    const body = JSON.stringify({ first_name, last_name, phone_number, email, refferer_code_used, plan, password, re_password });
+    console.log(body)
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
 
