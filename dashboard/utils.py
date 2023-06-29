@@ -171,16 +171,16 @@ class MLMSystem:
         if node.right_child:
             self._calculate_levels(node.right_child, level + 1, levels)
 
-    def count_users_by_depth_for_user(mlm_system, username):
+    def count_users_by_depth_for_user(mlm_system, username, depth_number):
         user = mlm_system.find_user(username)
         if not user:
             raise ValueError(f"User '{username}' not found")
 
-        # Initialize a list to store counts for each depth (up to 6th depth)
-        depth_counts = [0] * 6
+        # Initialize a list to store counts for each depth (up to depth_number specified)
+        depth_counts = [0] * depth_number
 
         def traverse(node, depth):
-            if depth > 6:
+            if depth > depth_number:
                 return
             if depth >= user.depth + 1:  # Check if the depth is greater than or equal to the next depth after the user's depth
                 depth_counts[depth - user.depth - 1] += 1
