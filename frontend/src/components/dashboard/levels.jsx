@@ -1,11 +1,13 @@
 import { useState, useContext, useEffect } from "react";
-import { DownlineListContext, UserAccountInfoContext } from "./navBar";
+import { DownlineListContext, UserAccountInfoContext, UserInfoContext } from "./navBar";
 import axios from "axios";
 
 const Levels = () => {
     const downlineList = useContext(DownlineListContext)
     const totalDownline = Object.keys(downlineList).length
     const userInfoBalance = useContext(UserAccountInfoContext)
+    const userInfo = useContext(UserInfoContext)
+
     const [levelInformation, setLevelInformation] = useState([])
 
     useEffect(() => {
@@ -38,7 +40,7 @@ const Levels = () => {
 
     return (
         <section className="container">
-            <div className="row row-cols-1 row-cols-lg-4 g-4 mt-3">
+            <div className="row row-cols-1 row-cols-lg-3 g-4 mt-3">
                 <div className="col">
                     <div className="card">
                         <div className="card-body text-center">
@@ -50,16 +52,8 @@ const Levels = () => {
                 <div className="col">
                     <div className="card text-center">
                         <div className="card-body">
-                            <p className="card-text">Referral Bonus</p>
-                            <h5 className="card-title">{`N${userInfoBalance.referral_bonus_earned}`}</h5>
-                        </div>
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="card">
-                        <div className="card-body text-center">
-                            <p className="card-text">Matching Bonus</p>
-                            <h5 className="card-title">{`N${userInfoBalance.match_bonus_earned}`}</h5>
+                            <p className="card-text">Current Plan</p>
+                            <h5 className="card-title">{userInfo.plan}</h5>
                         </div>
                     </div>
                 </div>

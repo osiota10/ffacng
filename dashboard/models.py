@@ -269,10 +269,16 @@ class ActiveUser(models.Model):
 
 
 class LevelInformation(models.Model):
+    PLAN = [
+        ('Premium', 'Premium'),
+        ('Eureka', 'Eureka')
+    ]
+
     level = models.IntegerField()
     expected_downlines = models.IntegerField()
     expected_match_bonus = models.IntegerField()
+    plan = models.CharField(max_length=9, choices=PLAN)
     additional_reward = models.CharField(max_length=225)
 
     def __str__(self):
-        return str(f"Level {self.level}")
+        return str(f"Level {self.level} - Plan {self.plan}")
