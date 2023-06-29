@@ -66,8 +66,7 @@ const CreateAccount = ({ createaccount, isAuthenticated, error, status }) => {
     const handlePlanOptionChange = (event) => {
         setSelectedPlanOption({ [event.target.name]: event.target.value });
     };
-    console.log(plan)
-    console.log(first_name)
+
     const onSubmit = e => {
         e.preventDefault();
         setLoading(true)
