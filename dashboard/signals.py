@@ -9,7 +9,12 @@ from django.db import transaction
 def create_user_account_info(sender, instance, created, **kwargs):
     if created:
         UserAccountBalance.objects.create(user=instance)
-        Payment.objects.create(user=instance)
+
+        if instance.plan == "Premium":
+            Payment.objects.create(user=instance, amount='15500')
+        elif instance.plan == "Eureka":
+            Payment.objects.create(user=instance, amount='15000')
+
         initialized_match_and_referral_bonus_payment()
 
 
