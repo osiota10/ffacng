@@ -83,15 +83,32 @@ const NotificationCard = ({ popover, onNewNotification }) => {
             <ListGroup as="ol">
                 {isLoading
                     ?
-                    <ListGroup.Item
-                        as="li"
-                        className="d-flex justify-content-between align-items-start border-bottom"
-                        action
-                    >
-                        <div className="ms-2 me-auto fw-bold">
-                            <LoaderIcon />
-                        </div>
-                    </ListGroup.Item>
+                    <>
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start border-bottom"
+                            action
+                        >
+                            <div className="ms-2 me-auto">
+                                User Notifications
+                            </div>
+
+                            <Link className="ms-2 me-auto fw-bolder text-decoration-none">
+                                See All
+                            </Link>
+                        </ListGroup.Item>
+
+                        <ListGroup.Item
+                            as="li"
+                            className="d-flex justify-content-between align-items-start border-bottom"
+                            action
+                        >
+                            <div className="ms-2 me-auto fw-bold">
+                                <LoaderIcon />
+                            </div>
+                        </ListGroup.Item>
+                    </>
+
                     :
                     <>
                         {Object.keys(notification).length === 0
