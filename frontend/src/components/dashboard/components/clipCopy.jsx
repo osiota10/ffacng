@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Toast } from 'react-bootstrap';
-import Badge from 'react-bootstrap/Badge';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const CopyToClipboardButton = ({ text }) => {
     const [isCopied, setIsCopied] = useState(false);
@@ -16,11 +16,22 @@ const CopyToClipboardButton = ({ text }) => {
         }, 5000);
     };
 
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" style={{ backgroundColor: 'blue' }} {...props} >
+            {isCopied ? 'Copied!!!' : 'Copy'}
+        </Tooltip>
+    );
+
     return (
         <>
-            <Badge bg="primary" onClick={handleCopyToClipboard}>
-                {isCopied ? 'Copied!!!' : 'Copy to Clipboard'}
-            </Badge>
+            <OverlayTrigger
+                placement="right"
+                overlay={renderTooltip}
+            >
+                <span onClick={handleCopyToClipboard}>
+                    <i className="fa-regular fa-clipboard text-primary"></i>
+                </span>
+            </OverlayTrigger>
         </>
     );
 };
