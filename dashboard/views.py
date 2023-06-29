@@ -267,7 +267,12 @@ def credit_users_referral_bonus_mlm_system(mlm_system):
     credited_users_referral = []
 
     for user in mlm_system.users:
-        user_downline = mlm_system.get_downline_by_depth(user, 6)
+        current_user = UserAccount.objects.get(email=user)
+        if current_user.plan == "Premium":
+            user_downline = mlm_system.get_downline_by_depth(user, 8)
+        elif current_user.plan == "Eureka":
+            user_downline = mlm_system.get_downline_by_depth(user, 6)
+
         amount_to_credit = 500
 
         credited_users_referral.extend(credit_user_referral_bonus(
