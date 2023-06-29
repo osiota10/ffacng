@@ -20,7 +20,7 @@ class UserInfoSerializer(UserSerializer):
         model = user
         fields = ('id', 'first_name', 'last_name', 'phone_number', 'email', 'get_photo_url',
                   'date_of_birth', 'gender', 'home_address', 'status', 'local_govt', 'state_of_origin',
-                  'nationality', 'image', 'code', 'bank_name', 'account_name', 'account_number', 'date_joined',
+                  'nationality', 'image', 'code', 'plan', 'bank_name', 'account_name', 'account_number', 'date_joined',
                   'local_govt', 'state_of_origin', 'recommended_by', 'recommended_by_email')
 
     def get_recommended_by_email(self, obj):
@@ -81,7 +81,7 @@ class MlmSystemUserSerializer(serializers.ModelSerializer):
     class Meta(UserSerializer.Meta):
         models = user
         fields = ('id', 'status', 'date_joined', 'first_name',
-                  'last_name', 'email', 'phone_number')
+                  'last_name', 'email', 'plan', 'phone_number')
 
 
 class WithdrawalSerializer(serializers.ModelSerializer):
