@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { UserInfoContext } from "./navBar";
 import { DownlineListContext, ReferralListContext, WithdrawalListContext, UserAccountInfoContext } from "./navBar";
 import CopyToClipboardButton from "./components/clipCopy";
+import UpdateProfileAlert from "./components/updateProfileAlert";
 
 
 function DashboardHome() {
@@ -29,8 +30,9 @@ function DashboardHome() {
     const userInfo = useContext(UserInfoContext)
 
     return (
-        <section className="container">
-            <div class="row row-cols-1 row-cols-lg-4 g-4 mt-4">
+        <section className="container mt-4">
+            <UpdateProfileAlert />
+            <div class="row row-cols-1 row-cols-lg-4 g-4">
                 <div class="col">
                     <div class="card">
                         <div class="card-body text-center" >

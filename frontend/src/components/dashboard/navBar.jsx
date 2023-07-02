@@ -255,12 +255,12 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                                 </NavLink>
                                             </li>
 
-                                            <li class="nav-link py-1">
+                                            {/* <li class="nav-link py-1">
                                                 <NavLink to="/dashboard/help-and-support" end className='text-decoration-none' aria-current="page">
                                                     <i className="fs-6 fa-solid fa-circle-info"></i>
                                                     <span className="ms-1 d-sm-inline">Help and Support</span>
                                                 </NavLink>
-                                            </li>
+                                            </li> */}
 
                                             <li class="nav-link py-1">
                                                 <NavLink to="/dashboard/notifications" end className='text-decoration-none' aria-current="page">
