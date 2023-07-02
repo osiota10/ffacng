@@ -87,8 +87,12 @@ class DownlineView(APIView):
     permission_classes = [IsAuthenticated,]
 
     def get(self, request):
-        current_user_downline = process_mlm_system().get_downline_by_depth(
-            request.user.email, 6)
+        if self.request.user.plan == "Premium":
+            current_user_downline = process_mlm_system().get_downline_by_depth(
+                request.user.email, 8)
+        elif self.request.user.plan == "Eureka":
+            current_user_downline = process_mlm_system().get_downline_by_depth(
+                request.user.email, 6)
 
         downline_user_list = []
         for user in current_user_downline[1:]:
