@@ -44,7 +44,7 @@ function App() {
   const [service, setService] = useState([]);
   const [companyInfo, setCompanyInfo] = useState([]);
   const [networkMarketing, setNetworkMarkeeting] = useState([]);
-  console.log(isAuthenticated())
+
 
   useEffect(() => {
     // Network Marketing
