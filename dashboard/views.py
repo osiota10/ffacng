@@ -99,14 +99,26 @@ class DownlineView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class RefferalView(generics.ListCreateAPIView):
-    serializer_class = MlmSystemUserSerializer
+class RefferalView(APIView):
     permission_classes = [IsAuthenticated,]
 
-    def get_queryset(self):
-        query = UserAccount.objects.filter(
-            refferer_code_used=self.request.user.code)
-        return query
+    def get(self, request):
+        if self.request.user.plan == "Premium":
+            current_user_referrals = process_mlm_system().get_downline_by_depth(
+                request.user.email, 8)
+        elif self.request.user.plan == "Eureka":
+            current_user_referrals = process_mlm_system().get_downline_by_depth(
+                request.user.email, 6)
+
+        referal_user_list = []
+        for user in current_user_referrals[1:]:
+            find_user = UserAccount.objects.get(email=user)
+            user_ref_code = find_user.refferer_code_used
+            if user_ref_code == self.request.user.code:
+                referal_user_list.append(find_user)
+        queryset = referal_user_list
+        serializer = MlmSystemUserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class WithdrawalView(APIView):
