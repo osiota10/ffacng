@@ -4,7 +4,7 @@ import TextTruncate from 'react-text-truncate';
 const ServiceCard = ({ id, title, pic, description, slug }) => {
     return (
         <>
-            <section className="col mx-auto" key={id}>
+            <section className="col" key={id}>
                 <section className="card mx-auto" style={{ maxWidth: '379px' }}>
                     <div class="ratio ratio-16x9">
                         <img src={pic} class="card-img-top" alt="..." />
