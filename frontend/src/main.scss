@@ -28,7 +28,7 @@ $body-bg:               #FEFCFF;
 
 
 //Button
-$btn-padding-y: 16px;
+$btn-padding-y: 12px;
 $btn-padding-x: 24px;
 $btn-border-radius: 64px;
 
@@ -231,10 +231,10 @@ box-shadow: $box-shadow-lg;
 transition: 1s ease;
 }
 
-.stats .card {
-// border: 0px;
-// box-shadow: $box-shadow-lg;
-}
+// .stats .card {
+// // border: 0px;
+// // box-shadow: $box-shadow-lg;
+// }
 
 .card.hero {
     border-radius: 0px !important;
