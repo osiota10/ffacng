@@ -66,9 +66,9 @@ const Footer = () => {
                         <ul className="list-group list-group-flush">
                             <li><Link to='/mlm-marketing' className="list-group-item bg-primary text-white"><i
                                 className="fa-solid fa-angles-right me-1"></i>How it works</Link></li>
-                            <li><Link to='#' className="list-group-item bg-primary text-white"><i
+                            <li><Link to='/signup' className="list-group-item bg-primary text-white"><i
                                 className="fa-solid fa-angles-right me-1"></i>Create Account</Link></li>
-                            <li><Link to='#' className="list-group-item bg-primary text-white"><i
+                            <li><Link to='/login' className="list-group-item bg-primary text-white"><i
                                 className="fa-solid fa-angles-right me-1"></i>Log in</Link></li>
                         </ul>
                     </section>
@@ -80,42 +80,42 @@ const Footer = () => {
 
                         {companyInfo.facebook_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.facebook_url}><i className="fa-brands fa-square-facebook fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.facebook_url} target="_blank"><i className="fa-brands fa-square-facebook fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
 
                         {companyInfo.instagram_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.instagram_url}><i className="fa-brands fa-instagram fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.instagram_url} target="_blank"><i className="fa-brands fa-instagram fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
 
                         {companyInfo.twitter_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.twitter_url}><i className="fa-brands fa-square-twitter fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.twitter_url} target="_blank"><i className="fa-brands fa-square-twitter fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
 
                         {companyInfo.linkedin_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.linkedin_url}><i className="fa-brands fa-linkedin fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.linkedin_url} target="_blank"><i className="fa-brands fa-linkedin fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
 
                         {companyInfo.youtube_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.youtube_url}><i className="fa-brands fa-square-youtube fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.youtube_url} target="_blank"><i className="fa-brands fa-square-youtube fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
 
                         {companyInfo.whatsapp_url
                             ?
-                            <div class="me-1 bg-white p-1"><Link to={companyInfo.whatsapp_url}><i className="fa-brands fa-whatsapp fs-5 text-primary align-middle"></i></Link></div>
+                            <div class="me-1 bg-white p-1"><Link to={companyInfo.whatsapp_url} target="_blank"><i className="fa-brands fa-whatsapp fs-5 text-primary align-middle"></i></Link></div>
                             :
                             null
                         }
