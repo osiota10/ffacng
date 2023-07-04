@@ -19,7 +19,7 @@ const StatGroup = () => {
                 ?
                 null
                 :
-                <section className="bg-primary py-8">
+                <section className="bg-light py-8">
                     <section className="container">
                         <section class="row row-cols-1 row-cols-lg-3 g-4 justify-content-center align-items-center">
                             {stat.map(item =>
