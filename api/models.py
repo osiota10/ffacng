@@ -165,6 +165,9 @@ class NetworkMarketing(models.Model):
     def __str__(self):
         return f"{self.title}"
 
+    def safe_description_body_html(self):
+        return strip_tags(self.description)
+
 
 class WhyChooseUs(models.Model):
     pic = CloudinaryField('image')

@@ -52,7 +52,8 @@ class WhyChooseUsSerializer(serializers.ModelSerializer):
 class NetworkMarketingSerializer(serializers.ModelSerializer):
     class Meta:
         model = NetworkMarketing
-        fields = ('id', 'title', 'sub_title', 'description', 'get_image_url')
+        fields = ('id', 'title', 'sub_title', 'description',
+                  'get_image_url', 'safe_description_body_html')
 
 
 class HeroMenuSerializer(serializers.ModelSerializer):

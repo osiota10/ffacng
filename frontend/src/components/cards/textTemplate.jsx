@@ -1,7 +1,8 @@
-import parse from 'html-react-parser';
+import { Link } from 'react-router-dom';
+import TextTruncate from 'react-text-truncate';
 
-function TextListTemplate({ title, sub_title, description, pic }) {
-
+function TextListTemplate({ title, sub_title, description, pic, link }) {
+    console.log(link)
     return (
         <section className="service-template" >
             <section className="row g-0 justify-content-center">
@@ -21,7 +22,21 @@ function TextListTemplate({ title, sub_title, description, pic }) {
                                 null
                             }
 
-                            {parse(`${description}`)}
+                            <TextTruncate
+                                line={6}
+                                element="p"
+                                truncateText="…"
+                                text={description}
+                                className=''
+                            />
+
+                            {
+                                link
+                                    ?
+                                    <Link className='btn btn-primary fw-normal mt-2' to={'/mlm-marketing'}>Read More</Link>
+                                    :
+                                    null
+                            }
                         </section>
                     </section>
                 </section>
