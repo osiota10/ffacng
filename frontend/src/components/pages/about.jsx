@@ -29,6 +29,7 @@ const About = () => {
             }
 
             <StatGroup />
+
             <WhyChooseUs />
         </div>
     );
