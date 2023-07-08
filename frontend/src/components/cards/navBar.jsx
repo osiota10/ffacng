@@ -46,20 +46,20 @@ const NavBar = () => {
                                 <div className="navbar-nav justify-content-center flex-grow-1 pe-3" id="navbarNav">
                                     <ul className="navbar-nav">
                                         <li className="nav-item me-3" onClick={handleOffcanvasClose}>
-                                            <NavLink to="/" className='nav-link' aria-current="page">Home</NavLink>
+                                            <NavLink to="/" className='nav-link ps-2' aria-current="page">Home</NavLink>
                                         </li>
 
                                         <li className="nav-item me-3" onClick={handleOffcanvasClose}>
-                                            <NavLink to="/about" className='nav-link' aria-current="page">About</NavLink>
+                                            <NavLink to="/about" className='nav-link ps-2' aria-current="page">About</NavLink>
                                         </li>
                                         <li className="nav-item me-3" onClick={handleOffcanvasClose}>
-                                            <NavLink to="/services" className='nav-link'>Services</NavLink>
+                                            <NavLink to="/services" className='nav-link ps-2'>Services</NavLink>
                                         </li>
                                         <li className="nav-item me-3" onClick={handleOffcanvasClose}>
-                                            <NavLink to="/mlm-marketing" className='nav-link'>MLM Marketing</NavLink>
+                                            <NavLink to="/mlm-marketing" className='nav-link ps-2'>MLM Marketing</NavLink>
                                         </li>
                                         <li className="nav-item me-3" onClick={handleOffcanvasClose}>
-                                            <NavLink to="/contact" className='nav-link'>Contact</NavLink>
+                                            <NavLink to="/contact" className='nav-link ps-2'>Contact</NavLink>
                                         </li>
                                     </ul>
                                     <span className="vstack d-lg-none .d-xl-block mt-3">

@@ -285,6 +285,10 @@ li {
   }
 }
 @media (max-width: 991.98px) {
+  .active:not(.breadcrumb-item) {
+    border-bottom: 0;
+    border-left: 8px solid #03623F;
+  }
   .card.hero .ratio-21x9 {
     --bs-aspect-ratio: calc(9 / 16 * 100%);
   }
