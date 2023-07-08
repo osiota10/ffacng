@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import parse from 'html-react-parser';
- 
+
 const ServiceDetail = () => {
     const { slug } = useParams();
     const [detail, setDetails] = useState([]);
