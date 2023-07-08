@@ -1,6 +1,6 @@
-import TextListTemplate from "./textTemplate";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import parse from 'html-react-parser';
 
 
 const WhyChooseUs = () => {
@@ -21,12 +21,24 @@ const WhyChooseUs = () => {
                 null
                 :
                 <section class="container py-8 why-choose-use reveal">
-                    <TextListTemplate
-                        title={whyChooseUs.title}
-                        sub_title={whyChooseUs.sub_title}
-                        description={whyChooseUs.description}
-                        pic={whyChooseUs.get_image_url}
-                    />
+
+                    <section className="row g-5 mt-6">
+                        <section className="col-lg-6">
+                            <img src={whyChooseUs.get_image_url} className="img-fluid" alt="..." />
+                        </section>
+
+                        <section className="col-lg-6">
+                            <h2>{whyChooseUs.title}</h2>
+                            {whyChooseUs.sub_title
+                                ?
+                                <h6>{whyChooseUs.sub_title}</h6>
+                                :
+                                null
+                            }
+                            <p>{parse(`${whyChooseUs.description}`)}</p>
+
+                        </section>
+                    </section>
                 </section>
             }
         </>
