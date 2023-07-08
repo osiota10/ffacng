@@ -4,6 +4,7 @@ from cloudinary.models import CloudinaryField
 from django.utils.timezone import now
 from ckeditor.fields import RichTextField
 from django.utils.html import strip_tags
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -101,7 +102,9 @@ class EmailSubscription(models.Model):
 
 class BranchAddress(models.Model):
     branch_name = models.CharField(max_length=20)
-    address_and_phone_number = RichTextField()
+    phone_number = models.CharField(null=True, blank=True, max_length=11, validators=[
+                                    RegexValidator(r'^\d{11}$', 'Enter a valid phone number.')])
+    branch_address = models.CharField(max_length=225, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Branch Addresses"

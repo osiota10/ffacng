@@ -65,7 +65,7 @@ class HeroMenuSerializer(serializers.ModelSerializer):
 class BranchAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = BranchAddress
-        fields = ('id', 'branch_name', 'address_and_phone_number')
+        fields = ('id', 'branch_name', 'phone_number', 'branch_address')
 
 
 class EmailSubscriptionSerializer(serializers.ModelSerializer):

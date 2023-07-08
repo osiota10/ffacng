@@ -277,7 +277,7 @@ class LevelInformation(models.Model):
     level = models.IntegerField()
     expected_downlines = models.IntegerField()
     expected_match_bonus = models.IntegerField()
-    plan = models.CharField(max_length=9, choices=PLAN)
+    plan = models.CharField(max_length=9, choices=PLAN, blank=True, null=True)
     additional_reward = models.CharField(max_length=225)
 
     def __str__(self):
