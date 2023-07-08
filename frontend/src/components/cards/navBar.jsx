@@ -1,7 +1,7 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { useState, useContext } from "react";
 import { CompanyInformationContext } from "../../App";
-
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 const NavBar = () => {
     const companyInfo = useContext(CompanyInformationContext)
@@ -16,6 +16,12 @@ const NavBar = () => {
     }
 
     window.addEventListener('scroll', handleFixNavBar)
+
+    // Offcanvas
+    const [showOffcanvas, setOffcanvasShow] = useState(false);
+    const handleOffcanvasClose = () => setOffcanvasShow(false);
+    const handleOffcanvasShow = () => setOffcanvasShow(true);
+
     return (
         <>
             <nav className={fix ? 'navbar fixed-top navbar-expand-lg scroll-navbar bg-white shadow' : 'navbar fixed-top navbar-expand-lg bg-white'} >
@@ -26,46 +32,48 @@ const NavBar = () => {
                         <h6>{companyInfo.company_name}</h6>
                     </Link>
 
-                    <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="offcanvass" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" onClick={handleOffcanvasShow}>
                         <i className="fa-solid fa-bars text-primary fs-3"></i>
                         {/* <span className="navbar-toggler-icon"></span> */}
                     </button>
-                    <div className="offcanvas offcanvas-start text-bg-light" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div className="offcanvas-header">
-                            <h5 className="offcanvas-title text-primary" id="offcanvasNavbarLabel">Food for All Campaign</h5>
-                            <button type="button" className="btn-close btn-close-danger" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            <div className="navbar-nav justify-content-center flex-grow-1 pe-3" id="navbarNav">
-                                <ul className="navbar-nav">
-                                    <li className="nav-item me-3">
-                                        <NavLink to="/" className='nav-link' aria-current="page">Home</NavLink>
-                                    </li>
 
-                                    <li className="nav-item me-3">
-                                        <NavLink to="/about" className='nav-link' aria-current="page">About</NavLink>
-                                    </li>
-                                    <li className="nav-item me-3">
-                                        <NavLink to="/services" className='nav-link'>Services</NavLink>
-                                    </li>
-                                    <li className="nav-item me-3">
-                                        <NavLink to="/mlm-marketing" className='nav-link'>MLM Marketing</NavLink>
-                                    </li>
-                                    <li className="nav-item me-3">
-                                        <NavLink to="/contact" className='nav-link'>Contact</NavLink>
-                                    </li>
-                                </ul>
-                                <span className="vstack d-lg-none .d-xl-block mt-3">
-                                    <Link className='btn btn-outline-primary text-decoration-none mb-3' to="/login">Log In</Link>
+                    <Offcanvas id="offcanvasNavbar" show={showOffcanvas} onHide={handleOffcanvasClose} backdrop="static" responsive="lg" tabIndex="-1">
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title>{companyInfo.company_name}</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <div className="offcanvas-body">
+                                <div className="navbar-nav justify-content-center flex-grow-1 pe-3" id="navbarNav">
+                                    <ul className="navbar-nav">
+                                        <li className="nav-item me-3" onClick={handleOffcanvasClose}>
+                                            <NavLink to="/" className='nav-link' aria-current="page">Home</NavLink>
+                                        </li>
+
+                                        <li className="nav-item me-3" onClick={handleOffcanvasClose}>
+                                            <NavLink to="/about" className='nav-link' aria-current="page">About</NavLink>
+                                        </li>
+                                        <li className="nav-item me-3" onClick={handleOffcanvasClose}>
+                                            <NavLink to="/services" className='nav-link'>Services</NavLink>
+                                        </li>
+                                        <li className="nav-item me-3" onClick={handleOffcanvasClose}>
+                                            <NavLink to="/mlm-marketing" className='nav-link'>MLM Marketing</NavLink>
+                                        </li>
+                                        <li className="nav-item me-3" onClick={handleOffcanvasClose}>
+                                            <NavLink to="/contact" className='nav-link'>Contact</NavLink>
+                                        </li>
+                                    </ul>
+                                    <span className="vstack d-lg-none .d-xl-block mt-3">
+                                        <Link className='btn btn-outline-primary text-decoration-none mb-3' to="/login">Log In</Link>
+                                        <Link className='btn btn-primary text-decoration-none' to="/signup">Create Account</Link>
+                                    </span>
+                                </div>
+                                <span className="d-none d-lg-block">
+                                    <Link className='btn btn-outline-primary text-decoration-none me-1' to="/login">Log In</Link>
                                     <Link className='btn btn-primary text-decoration-none' to="/signup">Create Account</Link>
                                 </span>
                             </div>
-                            <span className="d-none d-lg-block">
-                                <Link className='btn btn-outline-primary text-decoration-none me-1' to="/login">Log In</Link>
-                                <Link className='btn btn-primary text-decoration-none' to="/signup">Create Account</Link>
-                            </span>
-                        </div>
-                    </div>
+                        </Offcanvas.Body>
+                    </Offcanvas>
                 </div>
             </nav>
 
