@@ -2,6 +2,7 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { useState, useContext } from "react";
 import { CompanyInformationContext } from "../../App";
 
+
 const NavBar = () => {
     const companyInfo = useContext(CompanyInformationContext)
     const [fix, seFix] = useState(false)
@@ -55,13 +56,13 @@ const NavBar = () => {
                                     </li>
                                 </ul>
                                 <span className="vstack d-lg-none .d-xl-block mt-3">
-                                    <Link className='btn btn-outline-primary text-decoration-none mb-3' to="login">Log In</Link>
-                                    <Link className='btn btn-primary text-decoration-none' to="signup">Create Account</Link>
+                                    <Link className='btn btn-outline-primary text-decoration-none mb-3' to="/login">Log In</Link>
+                                    <Link className='btn btn-primary text-decoration-none' to="/signup">Create Account</Link>
                                 </span>
                             </div>
                             <span className="d-none d-lg-block">
-                                <Link className='btn btn-outline-primary text-decoration-none me-1' to="login">Log In</Link>
-                                <Link className='btn btn-primary text-decoration-none' to="signup">Create Account</Link>
+                                <Link className='btn btn-outline-primary text-decoration-none me-1' to="/login">Log In</Link>
+                                <Link className='btn btn-primary text-decoration-none' to="/signup">Create Account</Link>
                             </span>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PageTitle from "../cards/pageTitle";
-import parse from 'html-react-parser';
 
 
 const Contact = () => {

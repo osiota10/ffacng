@@ -6,7 +6,6 @@ import EmailSub from "../cards/emailSub";
 import TestimonialGroup from "../groups/testimonialGroup";
 import CoreValueGroup from "../groups/coreValueGroup";
 import StatGroup from "../groups/statGroup";
-import WhyChooseUs from "../cards/whyChooseUs";
 import Mlm from "../cards/mlm";
 import Slider from "react-slick";
 import TextTruncate from 'react-text-truncate';

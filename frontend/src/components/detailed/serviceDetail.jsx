@@ -13,7 +13,7 @@ const ServiceDetail = () => {
             .then(res => {
                 setDetails(res.data)
             })
-    }, []);
+    }, [slug]);
 
     return (
         <section>
