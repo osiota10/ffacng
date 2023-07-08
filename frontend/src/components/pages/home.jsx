@@ -71,7 +71,6 @@ const Home = () => {
             <CoreValueGroup />
             <ServicesGroup />
             <Mlm />
-            <WhyChooseUs />
             <TestimonialGroup />
 
             {Object.keys(photoGallery).length === 0
