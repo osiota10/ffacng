@@ -32,13 +32,14 @@ const Contact = () => {
                         {branchAddress.map(item =>
                             <div className="col-lg">
                                 <div className="card mx-auto" style={{ maxWidth: '379px' }}>
-                                    <div className="card-body">
+                                    <div className="card-body text-center">
                                         <section className="d-flex justify-content-center align-items-center mb-1">
                                             <i className="fa-solid fa-magnifying-glass-location  me-2 fs-4 text-primary bg-light p-3 rounded-circle"></i>
                                         </section>
 
-                                        <h5 className="card-title text-center">{item.branch_name}</h5>
-                                        {parse(`${item.address_and_phone_number}`)}
+                                        <h5 className="card-title">{item.branch_name} Branch</h5>
+                                        <p>{item.phone_number}</p>
+                                        <p>{item.branch_address}</p>
                                     </div>
                                 </div>
                             </div>
