@@ -29,7 +29,7 @@ const CoreValueGroup = () => {
                     <div class="row row-cols-1 row-cols-lg-3 g-4 justify-content-center">
                         {coreValue.map(item =>
                             <CoreValueCard
-                                id={item.id}
+                                key={item.id}
                                 title={item.title}
                                 description={item.description}
                                 pic={item.get_image_url}

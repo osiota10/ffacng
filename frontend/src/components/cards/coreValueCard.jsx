@@ -1,9 +1,9 @@
 import parse from 'html-react-parser';
 
 
-const CoreValueCard = ({ id, title, description, pic }) => {
+const CoreValueCard = ({ key, title, description, pic }) => {
     return (
-        <div class="col-lg-4" key={id}>
+        <div class="col-lg-4" key={key}>
             <div class="card mx-auto" style={{ maxWidth: '379px' }}>
                 <div class="card-body">
                     <section className="d-flex justify-content-center align-items-center mb-1">
