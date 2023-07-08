@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import TextTruncate from 'react-text-truncate';
 
 function TextListTemplate({ title, sub_title, description, pic, link }) {
-    console.log(link)
+
     return (
         <section className="service-template" >
             <section className="row g-0 justify-content-center">
