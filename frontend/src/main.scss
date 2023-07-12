@@ -354,6 +354,12 @@ a.nav-link.active{
     opacity: 1 !important;
 }
 
+.hero {
+  .slick-slide {
+    padding:  0 !important;
+  }
+}
+
 li {
     list-style: none !important;
 }
