@@ -23,12 +23,24 @@ const settings = {
 };
 
 const myStyle = {
-    backgroundImage: `url(${pic.url})`,
+    // backgroundImage: `url(${pic.url})`,
+    backgroundImage: `linear-gradient(to right, rgb(3, 98, 63), rgba(3, 98, 63, 0.3)), url(${pic.url})`,
     height: '100%',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    boxShadow: 'inset 0 0 0 100vh rgba(0, 0, 0, 0.6)',
+    // boxShadow: 'inset 0 0 0 100vh rgba(0, 0, 0, 0.6)',
 };
+
+const getStyle = (imgUrl) => {
+    return {
+        backgroundImage: `linear-gradient(to right, rgb(3, 98, 63), rgba(3, 98, 63, 0.3)), url(${imgUrl})`,
+        height: '100%',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        // boxShadow: 'inset 0 0 0 100vh rgba(235, 237, 240, 0.93)',
+    };
+};
+
 
 const Hero = () => {
     const [hero, setHero] = useState([]);
@@ -43,29 +55,30 @@ const Hero = () => {
 
     return (
         <section className="card hero">
-            <section className="ratio ratio-21x9" style={myStyle}>
+            <Slider {...settings}>
+                {hero.map(item =>
+                    <section>
+                        <section className="ratio ratio-21x9" style={getStyle(item.get_image_url)}>
 
-            </section>
+                        </section>
 
-            <div className="container position-absolute top-50 start-50 translate-middle py-5">
-                <Slider {...settings}>
-                    {hero.map(item =>
-                        <section className="custom-slider">
-                            <div className="row align-items-center justify-content-center">
-                                <div className="col-lg-9 mx-auto">
-                                    <h2 className="text-center mb-1 text-white">{item.title}</h2>
-                                    <p className="text-white">{item.snippet}</p>
+                        <div className="container position-absolute top-50 start-50 translate-middle py-5">
+                            <section className="custom-slider">
+                                <div className="row">
+                                    <div className="col-lg-6">
+                                        <h2 className="mb-1 text-white">{item.title}</h2>
+                                        <p className="text-white">{item.snippet}</p>
 
-                                    <div className='d-flex justify-content-center'>
-                                        <Link to="/contact" className='btn btn-primary mt-3'>Get in Touch</Link>
+                                        <div>
+                                            <Link to="/contact" className='btn btn-light mt-3'>Contact Us</Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
-                    )}
-                </Slider>
-            </div>
-
+                            </section>
+                        </div>
+                    </section>
+                )}
+            </Slider>
         </section>
     );
 }
