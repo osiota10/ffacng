@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { CompanyInformationContext } from "../../App";
 
 
+
 const ContactForm = () => {
     const companyInfo = useContext(CompanyInformationContext)
 
@@ -82,7 +83,7 @@ const ContactForm = () => {
                     </section>
 
                     <section class="row mb-4 p-2 contact-info">
-                        <a href="#" class="text-decoration-none">
+                        <a href={`mailto:${companyInfo.email}`} class="text-decoration-none">
                             <section class="d-flex">
                                 <section>
                                     <i class="fa-solid fa-envelope me-2 fs-4 text-primary bg-light p-3 rounded-circle"></i>
@@ -98,7 +99,7 @@ const ContactForm = () => {
                     </section>
 
                     <section class="row p-2 contact-info">
-                        <a href="#" class="text-decoration-none">
+                        <a href={`tel:${companyInfo.telephone}`} class="text-decoration-none">
                             <section class="d-flex">
                                 <section>
                                     <i class="fa-solid fa-phone-volume me-2 fs-4 text-primary bg-light p-3 rounded-circle"></i>
