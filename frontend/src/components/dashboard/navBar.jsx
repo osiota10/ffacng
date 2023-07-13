@@ -1,11 +1,9 @@
 import { Outlet, NavLink, Link, Navigate, useNavigate } from "react-router-dom";
-import { useState, useContext, createContext } from "react";
-import { CompanyInformationContext } from "../../App";
+import { useState, createContext } from "react";
 import { logout } from "../../actions/auth";
 import { connect } from "react-redux";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import Button from 'react-bootstrap/Button';
 import { useEffect } from "react";
 import axios from "axios";
 import NotificationCard from "./components/notificationCard";
@@ -51,9 +49,8 @@ function DashboardSideBar({ logout, isAuthenticated }) {
     // }, 600000)
 
     // const CurrentUserInfo = useContext(UserInfoContext)
-    const companyInfo = useContext(CompanyInformationContext)
+
     const [toggleSideMenu, setToggleSideMenu] = useState(true)
-    const [activeSideBarElement, setActiveSideBarElement] = useState(false)
 
     // Toggle Menu
     function handleToggleSideMenu() {
@@ -300,8 +297,10 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                             </ul>
 
                                             <div>
-                                                <a className="nav-link pb-4 text-decoration-none" href="#" onClick={logout_user}><i class="fs-6 uil uil-signout"></i><span
-                                                    className="ms-1 d-sm-inline">Sign Out</span></a>
+                                                <Link className="nav-link pb-4 text-decoration-none" onClick={logout_user}>
+                                                    <i class="fs-6 uil uil-signout"></i>
+                                                    <span className="ms-1 d-sm-inline">Sign Out</span>
+                                                </Link>
                                             </div>
                                         </div>
                                         :
@@ -313,9 +312,14 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                         {/* dashboard top menu */}
                                         <nav className='navbar navbar-dark bg-white shadow sticky-top' >
                                             <div className="container-fluid">
-                                                <a role="button"><i className="fs-3 fa-solid fa-bars text-primary" id="menu-btn" onClick={handleToggleSideMenu}></i></a>
-
-
+                                                <Link>
+                                                    <i
+                                                        className="fs-3 fa-solid fa-bars text-primary"
+                                                        id="menu-btn"
+                                                        onClick={handleToggleSideMenu}
+                                                    >
+                                                    </i>
+                                                </Link>
                                                 <section>
                                                     <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose>
                                                         <span className="me-3 position-relative" >
@@ -330,15 +334,15 @@ function DashboardSideBar({ logout, isAuthenticated }) {
                                                     </OverlayTrigger>
 
                                                     <div className="btn-group">
-                                                        <section className="dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-                                                            <a>
+                                                        <section className="dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-auto-close="true">
+                                                            <Link>
                                                                 <img src={userInfo.get_photo_url} className="rounded-circle mx-auto" width="50" height="50" alt="..." />
-                                                            </a>
+                                                            </Link>
                                                         </section>
 
                                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                                                             <li><Link to='/dashboard/edit-profile' className="dropdown-item">Edit Profile</Link></li>
-                                                            <li><a className="dropdown-item" href="#" onClick={logout_user}>Sign Out</a></li>
+                                                            <li><Link to='#' className="dropdown-item" onClick={logout_user}>Sign Out</Link></li>
                                                         </ul>
                                                     </div>
                                                 </section>
