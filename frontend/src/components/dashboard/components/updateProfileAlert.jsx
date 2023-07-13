@@ -32,7 +32,7 @@ const UpdateProfileAlert = () => {
                         Welcome!
                         <Link
                             to="/dashboard/edit-profile"
-                            className="ms-1 text-decoration-none fw-bold"
+                            className="mx-1 text-decoration-none fw-bold"
                         >
                             Click here
                         </Link>
